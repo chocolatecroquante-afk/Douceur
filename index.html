@@ -3,251 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cocon 💖</title>
-
+<title>Cocon - Site Thérapeutique</title>
 <style>
-body{
- margin:0;
- font-family:Arial, sans-serif;
- text-align:center;
- background:#fff0f3;
- transition:background .8s,color .8s;
- overflow-x:hidden;
-}
-
-h1{margin-top:18px;}
-
-button{
- padding:11px 16px;
- font-size:15px;
- border:none;
- border-radius:12px;
- background:#ff4d6d;
- color:white;
- margin:5px;
- cursor:pointer;
-}
-
-#message{
- font-size:22px;
- padding:14px;
-}
-
-img{
- max-width:220px;
- border-radius:12px;
- margin-top:12px;
-}
-
-/* Modes visuels */
-.dark{background:#161625;color:#eee;}
-.sleep{background:#000;color:#cfcfe6;}
-.difficile{background:linear-gradient(#2b0000,#000);color:#ffdede;}
-.calme{background:#eef7ff;}
-.lacher{background:#f7fff0;}
-
-/* Respiration */
-#breath{
- width:120px;height:120px;border-radius:50%;
- background:#ffb3c1;margin:20px auto;display:none;
-}
-
-/* Particules */
-.p{
- position:fixed;bottom:-40px;border-radius:50%;
- background:rgba(255,255,255,.5);
- animation:up linear infinite;
-}
-@keyframes up{to{transform:translateY(-110vh);opacity:0;}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+body, html{height:100%;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;transition:background 1s;}
+header{padding:20px;text-align:center;font-size:2em;font-weight:bold;background:#f8f8f8;width:100%;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+nav{margin:20px 0;display:flex;gap:15px;}
+nav button{padding:10px 20px;border:none;border-radius:25px;cursor:pointer;font-size:1em;transition:0.3s;}
+nav button:hover{opacity:0.8;}
+main{flex:1;display:flex;justify-content:center;align-items:center;position:relative;width:100%;height:100%;overflow:hidden;text-align:center;padding:20px;}
+.content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.8);box-shadow:0 5px 15px rgba(0,0,0,0.1);position:relative;z-index:2;}
+.breath-circle{width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.7);margin:0 auto;}
+.clouds,.hearts,.bubbles{position:absolute;width:200%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
+.clouds{background-image:url('https://i.imgur.com/9U7n8QT.png');background-repeat:repeat-x;background-size:contain;animation:cloudMove 60s linear infinite;opacity:0.5;display:none;}
+@keyframes cloudMove{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.hearts{display:none;}
+.heart{position:absolute;font-size:20px;color:pink;animation:floatHeart 5s linear infinite;}
+@keyframes floatHeart{0%{transform:translateY(100%) scale(0.5);opacity:0.7;}100%{transform:translateY(-100%) scale(1);opacity:0;}}
+.bubbles{display:none;}
+.bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);animation:floatBubble 6s linear infinite;}
+@keyframes floatBubble{0%{transform:translateY(100%) scale(0.5);opacity:0.6;}100%{transform:translateY(-100%) scale(1);opacity:0;}}
+.content img{max-width:100%;border-radius:10px;margin-bottom:15px;}
+.content p{margin:10px 0;font-size:1.2em;line-height:1.5em;}
+.audio-control{position:fixed;bottom:10px;left:10px;z-index:5;display:flex;align-items:center;gap:10px;}
+.audio-control select{padding:5px;border-radius:5px;}
 </style>
 </head>
-
 <body>
 
-<h1>💖 Cocon 💖</h1>
+<header>Cocon</header>
 
-<div>
-<button onclick="doux()">❤️ Douceur</button>
-<button onclick="difficile()">💔 Très difficile</button>
-<button onclick="calin()">🫂 Câlin</button>
-<button onclick="motivation()">🌱 Motivation</button>
-<button onclick="pensees()">🧠 Pensées</button>
-<button onclick="lacher()">🕊️ Lâcher prise</button>
-<button onclick="respirer()">💨 Respirer</button>
-<button onclick="sommeil()">😴 Sommeil</button>
+<nav>
+<button onclick="switchMode('respiration')">Respiration guidée</button>
+<button onclick="switchMode('confiance')">Confiance en soi</button>
+<button onclick="switchMode('douceur')">Douceur & câlin</button>
+<button onclick="switchMode('motivation')">Motivation</button>
+<button onclick="switchMode('lacherprise')">Pensée & Lâcher prise</button>
+</nav>
+
+<main id="main">
+<div class="content" id="content">
+<p>Bienvenue sur Cocon, votre espace de bien-être.</p>
 </div>
+<div class="clouds" id="clouds"></div>
+<div class="hearts" id="hearts"></div>
+<div class="bubbles" id="bubbles"></div>
+</main>
 
-<p id="message"></p>
-<div id="breath"></div>
-
-<div>
-<h3>😊 Humeur</h3>
-<button onclick="h('😢')">😢</button>
-<button onclick="h('😔')">😔</button>
-<button onclick="h('😐')">😐</button>
-<button onclick="h('🙂')">🙂</button>
-<button onclick="h('😊')">😊</button>
-<p id="hTxt"></p>
+<div class="audio-control">
+<audio id="music" controls autoplay loop>
+  <source src="https://www.mfiles.co.uk/mp3-downloads/ambient-calm.mp3" type="audio/mpeg">
+  Votre navigateur ne supporte pas la lecture audio.
+</audio>
+<select id="musicSelector" onchange="changeMusic(this.value)">
+  <option value="https://www.mfiles.co.uk/mp3-downloads/ambient-calm.mp3">Calme Ambiant</option>
+  <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Méditation Douce</option>
+  <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Relaxation Nature</option>
+</select>
 </div>
-
-<audio id="music" loop></audio>
 
 <script>
+const content=document.getElementById('content');
+const clouds=document.getElementById('clouds');
+const hearts=document.getElementById('hearts');
+const bubbles=document.getElementById('bubbles');
+const main=document.getElementById('main');
+const music=document.getElementById('music');
 
-// 🎵 MUSIQUE
-const music=document.getElementById("music");
-music.src="https://raw.github.com/chocolatecroquante-afk/Douceur/blob/main/Le%20vent%20nous%20portera_mp3.mp3";
-let started=false;
-function play(){
- if(!started){music.play().catch(()=>{});started=true;}
+function switchMode(mode){
+clouds.style.display='none';hearts.style.display='none';bubbles.style.display='none';
+content.innerHTML='';main.style.background='';clearInterval(breatheInterval);
+
+if(mode==='respiration'){
+document.body.style.background='#87ceeb';
+clouds.style.display='block';
+content.innerHTML=`<div class="breath-circle" id="circle"></div><p>Inspirez → Pause → Expirez → Pause</p>`;
+startBreathing();
 }
 
-// 🖼️ Images
-const imgs=["TON_IMAGE_1","TON_IMAGE_2","TON_IMAGE_3"];
-const img=()=>imgs[Math.floor(Math.random()*imgs.length)];
-
-// ❤️ Douceur
-const douxM=[
-"Respire doucement… tu es en sécurité 💗",
-"Tu n’as rien à prouver aujourd’hui 🌸",
-"Ta présence suffit 💖",
-"Un petit pas est déjà énorme 🌿",
-"Tu comptes vraiment 🤍",
-"Tu peux te reposer ici 🫶",
-"Ton cœur fait de son mieux 💕"
-];
-
-function doux(){
- reset();play();
- msg(douxM,true);
+if(mode==='confiance'){
+document.body.style.background='#fddde6';
+const phrases=["Je mérite de m'aimer.","Je suis capable de réussir.","J'ai confiance en mes décisions.","Chaque jour, je deviens plus fort(e).","Je suis fier(ère) de moi.","Mon opinion compte.","Je peux surmonter les défis.","Je crois en mes capacités.","Je suis digne de bonheur.","Je m'accepte tel(le) que je suis."];
+phrases.forEach(p=>content.innerHTML+=`<img src="https://source.unsplash.com/600x400/?nature,calm" alt="Image apaisante"><p>${p}</p>`);
 }
 
-// 💔 Très difficile
-const diffM=[
-"Reste… respire… je suis là 💔",
-"Tu peux survivre à cet instant 🫂",
-"Pose-toi… rien d’autre à faire 🤍",
-"Cette vague va passer 🌑",
-"Un souffle… puis un autre 🌬️",
-"Tiens bon doucement 💗",
-"Tu n’es pas seul·e ❤️"
-];
-
-function difficile(){
- reset();play();
- document.body.classList.add("difficile");
- msg(diffM,false);
- if(navigator.vibrate) navigator.vibrate([200,120,200]);
+if(mode==='douceur'){
+document.body.style.background='#ffffff';
+hearts.style.display='block';
+const phrases=["Vous êtes aimé(e) tel(le) que vous êtes.","Chaque câlin apporte douceur à votre cœur.","Prenez soin de vous aujourd'hui.","La tendresse est partout autour de vous.","Respirez la sérénité.","Vous méritez la douceur.","Les petits gestes apportent de grandes émotions.","Souriez, vous êtes précieux(se).","Laissez la paix vous envelopper.","Chaque instant doux compte."];
+phrases.forEach(p=>content.innerHTML+=`<img src="https://source.unsplash.com/600x400/?cuddle,soft" alt="Image réconfortante"><p>${p}</p>`);
+generateHearts();
 }
 
-// 🫂 Câlin
-const calM=[
-"Imagine des bras chauds autour de toi 🫂",
-"Tu es tenu·e… tu peux lâcher 🤍",
-"Quelqu’un te serre doucement 💖",
-"Tu es en sécurité dans ce câlin 💞"
-];
-
-function calin(){
- reset();play();
- msg(calM,false);
+if(mode==='motivation'){
+document.body.style.background='#fff9c4';
+bubbles.style.display='block';
+const phrases=["Vous pouvez y arriver !","Chaque pas compte.","La persévérance paie toujours.","Vos efforts portent leurs fruits.","N'abandonnez jamais.","Croyez en vos rêves.","Votre énergie fait la différence.","Transformez vos idées en actions.","La réussite commence maintenant.","Vous êtes capable de grandes choses."];
+phrases.forEach(p=>content.innerHTML+=`<p>${p}</p>`);
+generateBubbles();
 }
 
-// 🌱 Motivation douce
-const motM=[
-"Juste un tout petit pas 🌱",
-"Faire un minimum suffit 💛",
-"Tu n’as pas besoin d’être productif·ve 💗",
-"Se lever, respirer… c’est déjà beaucoup ✨"
-];
-
-function motivation(){reset();play();msg(motM,false);}
-
-// 🧠 Pensées
-const penM=[
-"Tes pensées ne sont pas des faits ☁️",
-"Elles vont ralentir 🌙",
-"Observe-les sans lutter 🌿",
-"Laisse-les passer comme des nuages 💭"
-];
-
-function pensees(){reset();play();msg(penM,false);}
-
-// 🕊️ Lâcher prise
-const lachM=[
-"Relâche tes épaules 🕊️",
-"Tu peux poser ce poids 💗",
-"Rien à contrôler maintenant 🤍",
-"Laisse faire… tu es en sécurité 🌸"
-];
-
-function lacher(){
- reset();play();
- document.body.classList.add("lacher");
- msg(lachM,false);
+if(mode==='lacherprise'){
+document.body.style.background='#a3d5d3';
+const phrases=["Laissez aller ce que vous ne pouvez contrôler.","Chaque respiration vous libère.","Le lâcher-prise est un cadeau pour soi.","Acceptez le moment présent.","La paix commence en vous.","Les pensées passent, vous restez.","Relâchez la tension de votre corps.","Soyez doux(ce) avec vous-même.","Libérez vos inquiétudes.","La sérénité est votre droit."];
+phrases.forEach(p=>content.innerHTML+=`<p>${p}</p>`);
+}
 }
 
-// 💨 Respiration
-function respirer(){
- reset();play();
- const b=document.getElementById("breath");
- b.style.display="block";
- document.getElementById("message").textContent=
- "Inspire… expire… doucement 💨";
- b.animate(
-  [{transform:"scale(1)"},{transform:"scale(1.6)"},{transform:"scale(1)"}],
-  {duration:4000,iterations:Infinity}
- );
+// Respiration guidée
+let breatheInterval;
+function startBreathing(){
+const circle=document.getElementById('circle');
+const sequence=[{scale:1.5,duration:4000,text:"Inspirez"},{scale:1.5,duration:1000,text:"Pause"},{scale:1,duration:5000,text:"Expirez"},{scale:1,duration:1000,text:"Pause"}];
+let i=0;
+function nextStep(){
+const step=sequence[i];
+circle.style.transition=`transform ${step.duration/1000}s ease-in-out`;
+circle.style.transform=`scale(${step.scale})`;
+content.querySelector('p').innerText=step.text;
+i=(i+1)%sequence.length;
+breatheInterval=setTimeout(nextStep,step.duration);
+}
+nextStep();
 }
 
-// 😴 Sommeil
-function sommeil(){
- reset();play();
- document.body.classList.add("sleep");
- document.getElementById("message").textContent=
- "Ferme les yeux… tu peux dormir 😴🌙";
-}
+// Coeurs aléatoires
+function generateHearts(){hearts.innerHTML='';for(let i=0;i<20;i++){const heart=document.createElement('div');heart.className='heart';heart.style.left=Math.random()*100+'%';heart.style.animationDuration=(3+Math.random()*5)+'s';heart.innerHTML='❤️';hearts.appendChild(heart);}}
+function generateBubbles(){bubbles.innerHTML='';for(let i=0;i<20;i++){const bubble=document.createElement('div');bubble.className='bubble';bubble.style.left=Math.random()*100+'%';const size=10+Math.random()*20;bubble.style.width=size+'px';bubble.style.height=size+'px';bubble.style.animationDuration=(4+Math.random()*4)+'s';bubbles.appendChild(bubble);}}
 
-// 😊 Humeur
-function h(e){
- localStorage.setItem("humeur",e);
- document.getElementById("hTxt").textContent="Humeur : "+e;
-}
-
-// 🧩 Utilitaires
-function msg(arr,withImg){
- const m=arr[Math.floor(Math.random()*arr.length)];
- document.getElementById("message").innerHTML=
-  withImg? m+"<br><img src='"+img()+"'>" : m;
-}
-
-function reset(){
- document.body.className="";
- document.getElementById("breath").style.display="none";
-}
-
-// 🌙 Nuit auto
-(function(){
- const h=new Date().getHours();
- if(h>=20||h<7) document.body.classList.add("dark");
-})();
-
-// ✨ Particules
-setInterval(()=>{
- const p=document.createElement("div");
- p.className="p";
- p.style.left=Math.random()*100+"vw";
- p.style.width=p.style.height=
- 10+Math.random()*25+"px";
- p.style.animationDuration=
- 7+Math.random()*6+"s";
- document.body.appendChild(p);
- setTimeout(()=>p.remove(),12000);
-},600);
-
+// Changer musique
+function changeMusic(url){music.src=url;music.play();}
 </script>
 
 </body>
 </html>
-
-

@@ -3,114 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cocon 🌙</title>
+<title>Cocon 💖</title>
 
 <style>
 body{
  margin:0;
- font-family:system-ui;
- background:#f4eaff;
- display:flex;
- align-items:center;
- justify-content:center;
- min-height:100vh;
- overflow:hidden;
- transition:background 1s,color 1s;
-}
-
-/* 🌙 Carte centrale */
-#card{
- background:white;
- padding:25px;
- border-radius:22px;
- width:92%;
- max-width:420px;
+ font-family:Arial, sans-serif;
  text-align:center;
- box-shadow:0 20px 40px rgba(0,0,0,.2);
- transition:all 1s;
+ background:#fff0f3;
+ transition:background .8s,color .8s;
+ overflow-x:hidden;
 }
 
-h1{margin-top:0;}
+h1{margin-top:18px;}
 
 button{
- margin:5px;
- padding:10px 14px;
+ padding:11px 16px;
+ font-size:15px;
  border:none;
- border-radius:10px;
- background:#ff6f91;
+ border-radius:12px;
+ background:#ff4d6d;
  color:white;
- font-size:14px;
+ margin:5px;
+ cursor:pointer;
 }
 
-#msg{
- font-size:20px;
- margin:18px 0;
- line-height:1.4;
+#message{
+ font-size:22px;
+ padding:14px;
 }
 
 img{
- max-width:200px;
- border-radius:14px;
- margin-top:10px;
+ max-width:220px;
+ border-radius:12px;
+ margin-top:12px;
 }
 
 /* Modes visuels */
-.dark{background:#0e0e1a;color:#eee;}
-.sleep{background:#000;color:#ddd;}
-.light{background:#f0fff5;}
-.calme{background:#eef6ff;}
-.danger{background:#2a0000;color:#ffdede;}
+.dark{background:#161625;color:#eee;}
+.sleep{background:#000;color:#cfcfe6;}
+.difficile{background:linear-gradient(#2b0000,#000);color:#ffdede;}
+.calme{background:#eef7ff;}
+.lacher{background:#f7fff0;}
 
-/* Respiration cercle */
-#circle{
+/* Respiration */
+#breath{
  width:120px;height:120px;border-radius:50%;
- background:#ffc0cb;
- margin:20px auto;
- display:none;
+ background:#ffb3c1;margin:20px auto;display:none;
 }
 
-/* Lucioles */
-.dot{
- position:fixed;
- width:6px;height:6px;
- background:white;
- border-radius:50%;
- opacity:.7;
- animation:rise linear infinite;
+/* Particules */
+.p{
+ position:fixed;bottom:-40px;border-radius:50%;
+ background:rgba(255,255,255,.5);
+ animation:up linear infinite;
 }
-@keyframes rise{
- to{transform:translateY(-110vh);opacity:0;}
-}
+@keyframes up{to{transform:translateY(-110vh);opacity:0;}}
 </style>
 </head>
 
 <body>
 
-<div id="card">
-
-<h1>🌙 Cocon</h1>
+<h1>💖 Cocon 💖</h1>
 
 <div>
-<button onclick="mode('doux')">❤️ Douceur</button>
-<button onclick="mode('difficile')">💔 Urgence</button>
-<button onclick="mode('calin')">🫂 Câlin</button>
-<button onclick="mode('motivation')">🌱 Motivation</button>
-<button onclick="mode('pensees')">🧠 Pensées</button>
-<button onclick="mode('lacher')">🕊️ Lâcher prise</button>
+<button onclick="doux()">❤️ Douceur</button>
+<button onclick="difficile()">💔 Très difficile</button>
+<button onclick="calin()">🫂 Câlin</button>
+<button onclick="motivation()">🌱 Motivation</button>
+<button onclick="pensees()">🧠 Pensées</button>
+<button onclick="lacher()">🕊️ Lâcher prise</button>
 <button onclick="respirer()">💨 Respirer</button>
-<button onclick="mode('sleep')">😴 Sommeil</button>
+<button onclick="sommeil()">😴 Sommeil</button>
 </div>
 
-<div id="msg">Tu peux rester ici autant que tu veux 💖</div>
-<div id="circle"></div>
+<p id="message"></p>
+<div id="breath"></div>
 
+<div>
+<h3>😊 Humeur</h3>
+<button onclick="h('😢')">😢</button>
+<button onclick="h('😔')">😔</button>
+<button onclick="h('😐')">😐</button>
+<button onclick="h('🙂')">🙂</button>
+<button onclick="h('😊')">😊</button>
+<p id="hTxt"></p>
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
 
-// 🎵 Musique
+// 🎵 MUSIQUE
 const music=document.getElementById("music");
 music.src="TON_LIEN_MUSIQUE";
 let started=false;
@@ -120,112 +104,146 @@ function play(){
 
 // 🖼️ Images
 const imgs=["TON_IMAGE_1","TON_IMAGE_2","TON_IMAGE_3"];
-const randImg=()=>imgs[Math.floor(Math.random()*imgs.length)];
+const img=()=>imgs[Math.floor(Math.random()*imgs.length)];
 
-// 💬 Messages par mode
-const data={
-
-doux:[
+// ❤️ Douceur
+const douxM=[
 "Respire doucement… tu es en sécurité 💗",
-"Tu n’as rien à prouver ici 🌸",
+"Tu n’as rien à prouver aujourd’hui 🌸",
 "Ta présence suffit 💖",
-"Tu peux te reposer maintenant 🫶",
-"Rien n’est urgent 🤍"
-],
+"Un petit pas est déjà énorme 🌿",
+"Tu comptes vraiment 🤍",
+"Tu peux te reposer ici 🫶",
+"Ton cœur fait de son mieux 💕"
+];
 
-difficile:[
+function doux(){
+ reset();play();
+ msg(douxM,true);
+}
+
+// 💔 Très difficile
+const diffM=[
 "Reste… respire… je suis là 💔",
 "Tu peux survivre à cet instant 🫂",
-"Pose-toi… laisse passer la vague 🌊",
+"Pose-toi… rien d’autre à faire 🤍",
+"Cette vague va passer 🌑",
 "Un souffle… puis un autre 🌬️",
+"Tiens bon doucement 💗",
 "Tu n’es pas seul·e ❤️"
-],
+];
 
-calin:[
+function difficile(){
+ reset();play();
+ document.body.classList.add("difficile");
+ msg(diffM,false);
+ if(navigator.vibrate) navigator.vibrate([200,120,200]);
+}
+
+// 🫂 Câlin
+const calM=[
 "Imagine des bras chauds autour de toi 🫂",
 "Tu es tenu·e… tu peux lâcher 🤍",
 "Quelqu’un te serre doucement 💖",
 "Tu es en sécurité dans ce câlin 💞"
-],
+];
 
-motivation:[
-"Un tout petit pas suffit 🌱",
-"Faire moins, c’est déjà faire 💛",
-"Tu avances même immobile ✨",
-"Aujourd’hui n’a pas besoin d’être parfait 💗"
-],
+function calin(){
+ reset();play();
+ msg(calM,false);
+}
 
-pensees:[
+// 🌱 Motivation douce
+const motM=[
+"Juste un tout petit pas 🌱",
+"Faire un minimum suffit 💛",
+"Tu n’as pas besoin d’être productif·ve 💗",
+"Se lever, respirer… c’est déjà beaucoup ✨"
+];
+
+function motivation(){reset();play();msg(motM,false);}
+
+// 🧠 Pensées
+const penM=[
 "Tes pensées ne sont pas des faits ☁️",
-"Laisse-les passer 🌙",
-"Observe sans lutter 🌿",
-"Ton esprit va ralentir 💭"
-],
+"Elles vont ralentir 🌙",
+"Observe-les sans lutter 🌿",
+"Laisse-les passer comme des nuages 💭"
+];
 
-lacher:[
+function pensees(){reset();play();msg(penM,false);}
+
+// 🕊️ Lâcher prise
+const lachM=[
 "Relâche tes épaules 🕊️",
 "Tu peux poser ce poids 💗",
 "Rien à contrôler maintenant 🤍",
-"Laisse faire… 🌸"
-],
+"Laisse faire… tu es en sécurité 🌸"
+];
 
-sleep:[
-"Ferme les yeux… tu peux dormir 😴",
-"Rien ne t’attend maintenant 🌙",
-"Ton corps peut se reposer 💗",
-"Laisse-toi glisser vers le sommeil 🤍"
-]
-
-};
-
-// 🎯 Mode principal
-function mode(type){
-
- play();
-
- document.body.className="";
- document.getElementById("circle").style.display="none";
-
- if(type==="sleep") document.body.classList.add("sleep");
- if(type==="difficile") document.body.classList.add("danger");
- if(type==="lacher") document.body.classList.add("light");
- if(type==="pensees") document.body.classList.add("calme");
-
- const arr=data[type];
- const m=arr[Math.floor(Math.random()*arr.length)];
-
- document.getElementById("msg").innerHTML=
-  m + (type==="doux" ? "<br><img src='"+randImg()+"'>" : "");
+function lacher(){
+ reset();play();
+ document.body.classList.add("lacher");
+ msg(lachM,false);
 }
 
-// 💨 Respiration immersive
+// 💨 Respiration
 function respirer(){
-
- play();
-
- document.body.className="";
- const c=document.getElementById("circle");
- c.style.display="block";
-
- document.getElementById("msg").textContent=
+ reset();play();
+ const b=document.getElementById("breath");
+ b.style.display="block";
+ document.getElementById("message").textContent=
  "Inspire… expire… doucement 💨";
-
- c.animate(
-  [{transform:"scale(1)"},{transform:"scale(1.7)"},{transform:"scale(1)"}],
-  {duration:4500,iterations:Infinity}
+ b.animate(
+  [{transform:"scale(1)"},{transform:"scale(1.6)"},{transform:"scale(1)"}],
+  {duration:4000,iterations:Infinity}
  );
 }
 
-// ✨ Lucioles
+// 😴 Sommeil
+function sommeil(){
+ reset();play();
+ document.body.classList.add("sleep");
+ document.getElementById("message").textContent=
+ "Ferme les yeux… tu peux dormir 😴🌙";
+}
+
+// 😊 Humeur
+function h(e){
+ localStorage.setItem("humeur",e);
+ document.getElementById("hTxt").textContent="Humeur : "+e;
+}
+
+// 🧩 Utilitaires
+function msg(arr,withImg){
+ const m=arr[Math.floor(Math.random()*arr.length)];
+ document.getElementById("message").innerHTML=
+  withImg? m+"<br><img src='"+img()+"'>" : m;
+}
+
+function reset(){
+ document.body.className="";
+ document.getElementById("breath").style.display="none";
+}
+
+// 🌙 Nuit auto
+(function(){
+ const h=new Date().getHours();
+ if(h>=20||h<7) document.body.classList.add("dark");
+})();
+
+// ✨ Particules
 setInterval(()=>{
- const d=document.createElement("div");
- d.className="dot";
- d.style.left=Math.random()*100+"vw";
- d.style.bottom="-10px";
- d.style.animationDuration=8+Math.random()*6+"s";
- document.body.appendChild(d);
- setTimeout(()=>d.remove(),15000);
-},700);
+ const p=document.createElement("div");
+ p.className="p";
+ p.style.left=Math.random()*100+"vw";
+ p.style.width=p.style.height=
+ 10+Math.random()*25+"px";
+ p.style.animationDuration=
+ 7+Math.random()*6+"s";
+ document.body.appendChild(p);
+ setTimeout(()=>p.remove(),12000);
+},600);
 
 </script>
 

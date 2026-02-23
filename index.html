@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Bouton de réconfort 🤍</title>
-
+  <meta charset="UTF-8">
+  <title>Kit de réconfort magique 💖</title>
   <style>
     body {
       background: #1e1e2f;
       color: #f5f5f5;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding-top: 120px;
+      padding-top: 100px;
+      transition: background 0.5s;
+      overflow: hidden;
     }
 
     button {
@@ -20,6 +22,11 @@
       background: #6c8cff;
       color: white;
       cursor: pointer;
+      transition: transform 0.2s, background 0.5s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
     }
 
     #message {
@@ -29,19 +36,48 @@
       margin-left: auto;
       margin-right: auto;
       line-height: 1.5;
+      opacity: 0;
+      transition: opacity 0.8s;
+      position: relative;
+    }
+
+    .emoji {
+      display: inline-block;
+      animation: float 1s ease forwards;
+      position: relative;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-30px) rotate(360deg); opacity: 0; }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #fff3b0;
+      animation: confetti-fall 2s linear forwards;
+      border-radius: 50%;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
 
 <body>
 
-  <h1>🤍 Si aujourd’hui est difficile</h1>
+  <h1>🌸 Kit de réconfort magique 🌸</h1>
 
-  <button onclick="reconfort()">
-    Appuie ici doucement 🫶
-  </button>
+  <button onclick="reconfort()">Appuie ici doucement 🫶</button>
 
   <p id="message"></p>
+
+  <audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
   <script>
     const messages = [
@@ -50,21 +86,55 @@
       "Aujourd’hui peut être juste une journée de survie, et c’est ok 🤍",
       "Tu mérites de la douceur, surtout maintenant 🫶",
       "Ce moment ne durera pas pour toujours 🕯️",
-      "Tu n’es pas seul, même si ça en donne l’impression 🌧️",
+      "Tu n’es pas seule, même si ça en donne l’impression 🌧️",
       "Faire le minimum est déjà beaucoup 💛",
-      "Ton cœur travaille dur. Sois doux avec toi-même 🧸",
-      "L'espoir est le pilier du monde 🌟",
-      "Je suis courageux et audacieux 🦾",
-      "Fais de ta vie un rêve et d'un rêve une réalité 😍",
-      "Quand tout est fichu, il y a encore le courage 🙌",
-      "Tu es incroyable ❤️"
+      "Ton cœur travaille dur. Sois douce avec toi-même 🧸",
+      "Chaque petit pas compte 🌸",
+      "C’est ok de juste respirer aujourd’hui 🫁",
+      "Des étoiles brillent pour toi ✨",
+      "Un câlin virtuel pour toi 🤗"
     ];
 
+    const colors = ["#ff9cee", "#a1cfff", "#fff3b0", "#b0ffe0", "#d1b0ff", "#ffb0b0", "#ffe0b0"];
+    const emojis = ["🌸","💛","🧸","✨","🍃","🫶","🌈"];
+
     function reconfort() {
-      let hasard = Math.floor(Math.random() * messages.length);
-      document.getElementById("message").textContent = messages[hasard];
+      const messageEl = document.getElementById("message");
+      const hasard = Math.floor(Math.random() * messages.length);
+      messageEl.innerHTML = messages[hasard];
+
+      // Ajouter un emoji flottant
+      const emojiSpan = document.createElement("span");
+      emojiSpan.className = "emoji";
+      emojiSpan.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      messageEl.appendChild(emojiSpan);
+
+      // Animation apparition
+      messageEl.style.opacity = 0;
+      setTimeout(() => { messageEl.style.opacity = 1; }, 50);
+
+      // Changer la couleur de fond
+      document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+      // Effet “pop” bouton
+      const button = document.querySelector("button");
+      button.style.transform = "scale(1.2)";
+      setTimeout(() => { button.style.transform = "scale(1)"; }, 200);
+
+      // Confettis doux
+      for (let i = 0; i < 5; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        document.body.appendChild(confetti);
+        setTimeout(() => { confetti.remove(); }, 2000);
+      }
+
+      // Jouer le son
+      document.getElementById("sound").play();
     }
   </script>
 
 </body>
 </html>
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bouton de réconfort 🤍</title>
+
+  <style>
+    body {
+      background: #1e1e2f;
+      color: #f5f5f5;
+      font-family: Arial;
+      text-align: center;
+      padding-top: 120px;
+    }
+
+    button {
+      padding: 18px 28px;
+      font-size: 20px;
+      border: none;
+      border-radius: 14px;
+      background: #6c8cff;
+      color: white;
+      cursor: pointer;
+    }
+
+    #message {
+      margin-top: 50px;
+      font-size: 26px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🤍 Si aujourd’hui est difficile</h1>
+
+  <button onclick="reconfort()">
+    Appuie ici doucement 🫶
+  </button>
+
+  <p id="message"></p>
+
+  <script>
+    const messages = [
+      "Tu n’as pas besoin d’aller bien pour continuer 🌙",
+      "Respire lentement. Tu es encore là 🍃",
+      "Aujourd’hui peut être juste une journée de survie, et c’est ok 🤍",
+      "Tu mérites de la douceur, surtout maintenant 🫶",
+      "Ce moment ne durera pas pour toujours 🕯️",
+      "Tu n’es pas seul, même si ça en donne l’impression 🌧️",
+      "Faire le minimum est déjà beaucoup 💛",
+      "Ton cœur travaille dur. Sois doux avec toi-même 🧸",
+      "L'espoir est le pilier du monde 🌟",
+      "Je suis courageux et audacieux 🦾",
+      "Fais de ta vie un rêve et d'un rêve une réalité 😍",
+      "Quand tout est fichu, il y a encore le courage 🙌",
+      "Tu es incroyable ❤️"
+    ];
+
+    function reconfort() {
+      let hasard = Math.floor(Math.random() * messages.length);
+      document.getElementById("message").textContent = messages[hasard];
+    }
+  </script>
+
+</body>
+</html>

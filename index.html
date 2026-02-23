@@ -2,26 +2,27 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Kit de réconfort magique 💖</title>
+  <title>Mini-app réconfort magique 💖</title>
   <style>
     body {
       background: #1e1e2f;
       color: #f5f5f5;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding-top: 100px;
+      padding-top: 80px;
       transition: background 0.5s;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     button {
-      padding: 18px 28px;
+      padding: 16px 28px;
       font-size: 20px;
       border: none;
       border-radius: 14px;
       background: #6c8cff;
       color: white;
       cursor: pointer;
+      margin: 10px;
       transition: transform 0.2s, background 0.5s;
     }
 
@@ -30,7 +31,7 @@
     }
 
     #message {
-      margin-top: 50px;
+      margin-top: 40px;
       font-size: 26px;
       max-width: 600px;
       margin-left: auto;
@@ -66,37 +67,54 @@
       0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
       100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
     }
+
+    #respiration {
+      margin-top: 30px;
+      font-size: 24px;
+      color: #ffe0b0;
+    }
+
+    img {
+      max-width: 200px;
+      display: block;
+      margin: 20px auto;
+      border-radius: 12px;
+    }
   </style>
 </head>
 
 <body>
 
-  <h1>🌸 Kit de réconfort magique 🌸</h1>
+  <h1>🌸 Coffre magique de réconfort 🌸</h1>
 
-  <button onclick="reconfort()">Appuie ici doucement 🫶</button>
+  <button onclick="reconfort()">Appuie ici 🫶</button>
+  <button onclick="respirer()">Respiration guidée 🌬️</button>
 
   <p id="message"></p>
+  <p id="respiration"></p>
 
   <audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+  <audio id="musique" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
 
   <script>
     const messages = [
       "Tu n’as pas besoin d’aller bien pour continuer 🌙",
       "Respire lentement. Tu es encore là 🍃",
-      "Aujourd’hui peut être juste une journée de survie, et c’est ok 🤍",
-      "Tu mérites de la douceur, surtout maintenant 🫶",
-      "Ce moment ne durera pas pour toujours 🕯️",
-      "Tu n’es pas seule, même si ça en donne l’impression 🌧️",
-      "Faire le minimum est déjà beaucoup 💛",
-      "Ton cœur travaille dur. Sois douce avec toi-même 🧸",
       "Chaque petit pas compte 🌸",
       "C’est ok de juste respirer aujourd’hui 🫁",
       "Des étoiles brillent pour toi ✨",
-      "Un câlin virtuel pour toi 🤗"
+      "Un câlin virtuel pour toi 🤗",
+      "Le soleil se lèvera encore demain 🌅",
+      "Ta présence fait la différence 💖"
     ];
 
-    const colors = ["#ff9cee", "#a1cfff", "#fff3b0", "#b0ffe0", "#d1b0ff", "#ffb0b0", "#ffe0b0"];
+    const colors = ["#ff9cee", "#a1cfff", "#fff3b0", "#b0ffe0", "#d1b0ff", "#ffb0b0", "#ffe0b0", "#b0ffd4"];
     const emojis = ["🌸","💛","🧸","✨","🍃","🫶","🌈"];
+    const images = [
+      "https://i.imgur.com/J9XxM7B.gif", // exemple gif relaxant
+      "https://i.imgur.com/VbXz1t0.png", // exemple image douce
+      "https://i.imgur.com/abcd123.gif"
+    ];
 
     function reconfort() {
       const messageEl = document.getElementById("message");
@@ -108,6 +126,11 @@
       emojiSpan.className = "emoji";
       emojiSpan.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       messageEl.appendChild(emojiSpan);
+
+      // Ajouter une image aléatoire
+      const img = document.createElement("img");
+      img.src = images[Math.floor(Math.random() * images.length)];
+      messageEl.appendChild(img);
 
       // Animation apparition
       messageEl.style.opacity = 0;
@@ -133,8 +156,15 @@
       // Jouer le son
       document.getElementById("sound").play();
     }
+
+    function respirer() {
+      const p = document.getElementById("respiration");
+      p.textContent = "Inspire…";
+      setTimeout(() => { p.textContent = "Retient…"; }, 4000);
+      setTimeout(() => { p.textContent = "Expire…"; }, 8000);
+      setTimeout(() => { p.textContent = ""; }, 12000);
+    }
   </script>
 
 </body>
 </html>
-

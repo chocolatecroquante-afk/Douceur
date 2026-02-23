@@ -80,6 +80,32 @@
       margin: 20px auto;
       border-radius: 12px;
     }
+
+    /* ---------------- Mobile Responsive ---------------- */
+    @media (max-width: 600px) {
+      body {
+        padding-top: 50px;
+        font-size: 16px;
+      }
+
+      #message {
+        font-size: 20px;
+        max-width: 90%;
+      }
+
+      button {
+        padding: 12px 20px;
+        font-size: 18px;
+      }
+
+      #respiration {
+        font-size: 20px;
+      }
+
+      img {
+        max-width: 150px;
+      }
+    }
   </style>
 </head>
 
@@ -93,10 +119,11 @@
   <p id="message"></p>
   <p id="respiration"></p>
 
-  <audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
-  <audio id="musique" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
+  <audio id="sound"></audio>
+  <audio id="musique" loop></audio>
 
   <script>
+    // ---------------- Variables faciles à modifier ----------------
     const messages = [
       "Tu n’as pas besoin d’aller bien pour continuer 🌙",
       "Respire lentement. Tu es encore là 🍃",
@@ -105,32 +132,51 @@
       "Des étoiles brillent pour toi ✨",
       "Un câlin virtuel pour toi 🤗",
       "Le soleil se lèvera encore demain 🌅",
-      "Ta présence fait la différence 💖",
-      "La beauté est dans les yeux de celui qui regarde :pray:",
-      "Fais de ta vie un rêve, et d'un rêve, une réalité :fire:",
-      "Le souvenir, c'est la présence invisible :sparles:"
-      
+      "Ta présence fait la différence 💖"
     ];
 
     const colors = ["#ff9cee", "#a1cfff", "#fff3b0", "#b0ffe0", "#d1b0ff", "#ffb0b0", "#ffe0b0", "#b0ffd4"];
     const emojis = ["🌸","💛","🧸","✨","🍃","🫶","🌈"];
-    const images = [
 
+    // ---------------- Images / GIF ----------------
+    const images = [
+      "https://raw.githubusercontent.com/ton-nom-utilisateur/generateur-jours-difficiles/main/chat.gif",
+      "https://raw.githubusercontent.com/ton-nom-utilisateur/generateur-jours-difficiles/main/etoiles.png"
     ];
 
+    // ---------------- Sons ----------------
+    const soundUrl = "https://raw.githubusercontent.com/ton-nom-utilisateur/generateur-jours-difficiles/main/button-click.mp3";
+    const musicUrl = "https://raw.githubusercontent.com/ton-nom-utilisateur/generateur-jours-difficiles/main/musique.mp3";
+
+    const sound = document.getElementById("sound");
+    sound.src = soundUrl;
+
+    const musique = document.getElementById("musique");
+    musique.src = musicUrl;
+
+    let musiqueJouee = false; // Pour mobile, lancer musique au premier clic
+
+    // ---------------- Fonction reconfort ----------------
     function reconfort() {
+      // Lancer la musique sur mobile au premier clic
+      if (!musiqueJouee) {
+        musique.play().catch(() => {});
+        musiqueJouee = true;
+      }
+
       const messageEl = document.getElementById("message");
       const hasard = Math.floor(Math.random() * messages.length);
       messageEl.innerHTML = messages[hasard];
 
-      // Ajouter un emoji flottant
+      // Emoji flottant
       const emojiSpan = document.createElement("span");
       emojiSpan.className = "emoji";
       emojiSpan.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       messageEl.appendChild(emojiSpan);
 
-      // Ajouter une image aléatoire
+      // Image/GIF aléatoire (adapté mobile)
       const img = document.createElement("img");
+      const isMobile = window.innerWidth < 600;
       img.src = images[Math.floor(Math.random() * images.length)];
       messageEl.appendChild(img);
 
@@ -141,13 +187,14 @@
       // Changer la couleur de fond
       document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-      // Effet “pop” bouton
+      // Bouton “pop”
       const button = document.querySelector("button");
       button.style.transform = "scale(1.2)";
       setTimeout(() => { button.style.transform = "scale(1)"; }, 200);
 
-      // Confettis doux
-      for (let i = 0; i < 5; i++) {
+      // Confettis doux (moins sur mobile)
+      let confettiCount = isMobile ? 3 : 5;
+      for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement("div");
         confetti.className = "confetti";
         confetti.style.left = Math.random() * window.innerWidth + "px";
@@ -156,9 +203,10 @@
       }
 
       // Jouer le son
-      document.getElementById("sound").play();
+      sound.play();
     }
 
+    // ---------------- Fonction respiration ----------------
     function respirer() {
       const p = document.getElementById("respiration");
       p.textContent = "Inspire…";
@@ -166,12 +214,11 @@
       setTimeout(() => { p.textContent = "Expire…"; }, 8000);
       setTimeout(() => { p.textContent = ""; }, 12000);
     }
+
   </script>
 
 </body>
 </html>
-
-
 
 
 

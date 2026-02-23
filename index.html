@@ -1,138 +1,158 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cocon - Site Thérapeutique</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-body, html{height:100%;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;transition:background 1s;}
-header{padding:20px;text-align:center;font-size:2em;font-weight:bold;background:#f8f8f8;width:100%;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-nav{margin:20px 0;display:flex;gap:15px;}
-nav button{padding:10px 20px;border:none;border-radius:25px;cursor:pointer;font-size:1em;transition:0.3s;}
-nav button:hover{opacity:0.8;}
-main{flex:1;display:flex;justify-content:center;align-items:center;position:relative;width:100%;height:100%;overflow:hidden;text-align:center;padding:20px;}
-.content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.8);box-shadow:0 5px 15px rgba(0,0,0,0.1);position:relative;z-index:2;}
-.breath-circle{width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.7);margin:0 auto;}
-.clouds,.hearts,.bubbles{position:absolute;width:200%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
-.clouds{background-image:url('https://i.imgur.com/9U7n8QT.png');background-repeat:repeat-x;background-size:contain;animation:cloudMove 60s linear infinite;opacity:0.5;display:none;}
-@keyframes cloudMove{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-.hearts{display:none;}
-.heart{position:absolute;font-size:20px;color:pink;animation:floatHeart 5s linear infinite;}
-@keyframes floatHeart{0%{transform:translateY(100%) scale(0.5);opacity:0.7;}100%{transform:translateY(-100%) scale(1);opacity:0;}}
-.bubbles{display:none;}
-.bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);animation:floatBubble 6s linear infinite;}
-@keyframes floatBubble{0%{transform:translateY(100%) scale(0.5);opacity:0.6;}100%{transform:translateY(-100%) scale(1);opacity:0;}}
-.content img{max-width:100%;border-radius:10px;margin-bottom:15px;}
-.content p{margin:10px 0;font-size:1.2em;line-height:1.5em;}
-.audio-control{position:fixed;bottom:10px;left:10px;z-index:5;display:flex;align-items:center;gap:10px;}
-.audio-control select{padding:5px;border-radius:5px;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cocon - Site Thérapeutique</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    body, html {height:100%; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; transition:background 1s;}
+    header {padding:20px; text-align:center; font-size:2em; font-weight:bold; background:#f8f8f8; width:100%; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    nav {margin:20px 0; display:flex; gap:15px;}
+    nav button {padding:10px 20px; border:none; border-radius:25px; cursor:pointer; font-size:1em; transition:0.3s;}
+    nav button:hover {opacity:0.8;}
+    main {flex:1; display:flex; justify-content:center; align-items:center; position:relative; width:100%; height:100%; overflow:hidden; text-align:center; padding:20px;}
+    .content {max-width:600px; padding:20px; border-radius:15px; background:rgba(255,255,255,0.8); box-shadow:0 5px 15px rgba(0,0,0,0.1); position:relative; z-index:2;}
+    .breath-circle {width:150px; height:150px; border-radius:50%; background:rgba(255,255,255,0.7); margin:0 auto;}
+    .clouds, .hearts, .bubbles {position:absolute; width:200%; height:100%; pointer-events:none; z-index:1; overflow:hidden;}
+    .clouds {background-image:url('https://i.imgur.com/9U7n8QT.png'); background-repeat:repeat-x; background-size:contain; animation:cloudMove 60s linear infinite; opacity:0.5; display:none;}
+    @keyframes cloudMove {0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+    .hearts {display:none;}
+    .heart {position:absolute; font-size:20px; color:pink; animation:floatHeart 5s linear infinite;}
+    @keyframes floatHeart {0%{transform:translateY(100%) scale(0.5);opacity:0.7;}100%{transform:translateY(-100%) scale(1);opacity:0;}}
+    .bubbles {display:none;}
+    .bubble {position:absolute; border-radius:50%; background:rgba(255,255,255,0.6); animation:floatBubble 6s linear infinite;}
+    @keyframes floatBubble {0%{transform:translateY(100%) scale(0.5);opacity:0.6;}100%{transform:translateY(-100%) scale(1);opacity:0;}}
+    .content img {max-width:100%; border-radius:10px; margin-bottom:15px;}
+    .content p {margin:10px 0; font-size:1.2em; line-height:1.5em;}
+    audio {position:fixed; bottom:10px; left:10px; z-index:5;}
+  </style>
 </head>
 <body>
 
 <header>Cocon</header>
 
 <nav>
-<button onclick="switchMode('respiration')">Respiration guidée</button>
-<button onclick="switchMode('confiance')">Confiance en soi</button>
-<button onclick="switchMode('douceur')">Douceur & câlin</button>
-<button onclick="switchMode('motivation')">Motivation</button>
-<button onclick="switchMode('lacherprise')">Pensée & Lâcher prise</button>
+  <button onclick="switchMode('respiration')">Respiration guidée</button>
+  <button onclick="switchMode('confiance')">Confiance en soi</button>
+  <button onclick="switchMode('douceur')">Douceur & câlin</button>
+  <button onclick="switchMode('motivation')">Motivation</button>
+  <button onclick="switchMode('lacherprise')">Pensée & Lâcher prise</button>
 </nav>
 
 <main id="main">
-<div class="content" id="content">
-<p>Bienvenue sur Cocon, votre espace de bien-être.</p>
-</div>
-<div class="clouds" id="clouds"></div>
-<div class="hearts" id="hearts"></div>
-<div class="bubbles" id="bubbles"></div>
+  <div class="content" id="content">
+    <p>Bienvenue sur Cocon, votre espace de bien-être.</p>
+  </div>
+
+  <div class="clouds" id="clouds"></div>
+  <div class="hearts" id="hearts"></div>
+  <div class="bubbles" id="bubbles"></div>
 </main>
 
-<div class="audio-control">
 <audio id="music" controls autoplay loop>
   <source src="https://www.mfiles.co.uk/mp3-downloads/ambient-calm.mp3" type="audio/mpeg">
   Votre navigateur ne supporte pas la lecture audio.
 </audio>
-<select id="musicSelector" onchange="changeMusic(this.value)">
-  <option value="https://www.mfiles.co.uk/mp3-downloads/ambient-calm.mp3">Calme Ambiant</option>
-  <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Méditation Douce</option>
-  <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Relaxation Nature</option>
-</select>
-</div>
 
 <script>
-const content=document.getElementById('content');
-const clouds=document.getElementById('clouds');
-const hearts=document.getElementById('hearts');
-const bubbles=document.getElementById('bubbles');
-const main=document.getElementById('main');
-const music=document.getElementById('music');
+const content = document.getElementById('content');
+const clouds = document.getElementById('clouds');
+const hearts = document.getElementById('hearts');
+const bubbles = document.getElementById('bubbles');
+const main = document.getElementById('main');
+const music = document.getElementById('music');
 
-function switchMode(mode){
-clouds.style.display='none';hearts.style.display='none';bubbles.style.display='none';
-content.innerHTML='';main.style.background='';clearInterval(breatheInterval);
+function switchMode(mode) {
+  clouds.style.display='none'; hearts.style.display='none'; bubbles.style.display='none';
+  content.innerHTML=''; main.style.background='';
+  
+  if(mode==='respiration') {
+    document.body.style.background='#87ceeb';
+    clouds.style.display='block';
+    content.innerHTML=`<div class="breath-circle" id="circle"></div>
+    <p>Inspirez → Pause → Expirez → Pause<br>Suivez le cercle.</p>`;
+    startBreathing();
+  }
 
-if(mode==='respiration'){
-document.body.style.background='#87ceeb';
-clouds.style.display='block';
-content.innerHTML=`<div class="breath-circle" id="circle"></div><p>Inspirez → Pause → Expirez → Pause</p>`;
-startBreathing();
-}
+  if(mode==='confiance') {
+    document.body.style.background='#fddde6';
+    const phrases = ["Je mérite de m'aimer.","Je suis capable de réussir.","J'ai confiance en mes décisions.","Chaque jour, je deviens plus fort(e).","Je suis fier(ère) de moi.","Mon opinion compte.","Je peux surmonter les défis.","Je crois en mes capacités.","Je suis digne de bonheur.","Je m'accepte tel(le) que je suis."];
+    phrases.forEach(p=>content.innerHTML+=`<img src="https://source.unsplash.com/600x400/?nature,calm" alt="Image apaisante"><p>${p}</p>`);
+  }
 
-if(mode==='confiance'){
-document.body.style.background='#fddde6';
-const phrases=["Je mérite de m'aimer.","Je suis capable de réussir.","J'ai confiance en mes décisions.","Chaque jour, je deviens plus fort(e).","Je suis fier(ère) de moi.","Mon opinion compte.","Je peux surmonter les défis.","Je crois en mes capacités.","Je suis digne de bonheur.","Je m'accepte tel(le) que je suis."];
-phrases.forEach(p=>content.innerHTML+=`<img src="https://source.unsplash.com/600x400/?nature,calm" alt="Image apaisante"><p>${p}</p>`);
-}
+  if(mode==='douceur') {
+    document.body.style.background='#ffffff';
+    hearts.style.display='block';
+    const phrases = ["Vous êtes aimé(e) tel(le) que vous êtes.","Chaque câlin apporte douceur à votre cœur.","Prenez soin de vous aujourd'hui.","La tendresse est partout autour de vous.","Respirez la sérénité.","Vous méritez la douceur.","Les petits gestes apportent de grandes émotions.","Souriez, vous êtes précieux(se).","Laissez la paix vous envelopper.","Chaque instant doux compte."];
+    phrases.forEach(p=>content.innerHTML+=`<img src="https://source.unsplash.com/600x400/?cuddle,soft" alt="Image réconfortante"><p>${p}</p>`);
+    generateHearts();
+  }
 
-if(mode==='douceur'){
-document.body.style.background='#ffffff';
-hearts.style.display='block';
-const phrases=["Vous êtes aimé(e) tel(le) que vous êtes.","Chaque câlin apporte douceur à votre cœur.","Prenez soin de vous aujourd'hui.","La tendresse est partout autour de vous.","Respirez la sérénité.","Vous méritez la douceur.","Les petits gestes apportent de grandes émotions.","Souriez, vous êtes précieux(se).","Laissez la paix vous envelopper.","Chaque instant doux compte."];
-phrases.forEach(p=>content.innerHTML+=`<img src="https://source.unsplash.com/600x400/?cuddle,soft" alt="Image réconfortante"><p>${p}</p>`);
-generateHearts();
-}
+  if(mode==='motivation') {
+    document.body.style.background='#fff9c4';
+    bubbles.style.display='block';
+    const phrases = ["Vous pouvez y arriver !","Chaque pas compte.","La persévérance paie toujours.","Vos efforts portent leurs fruits.","N'abandonnez jamais.","Croyez en vos rêves.","Votre énergie fait la différence.","Transformez vos idées en actions.","La réussite commence maintenant.","Vous êtes capable de grandes choses."];
+    phrases.forEach(p=>content.innerHTML+=`<p>${p}</p>`);
+    generateBubbles();
+  }
 
-if(mode==='motivation'){
-document.body.style.background='#fff9c4';
-bubbles.style.display='block';
-const phrases=["Vous pouvez y arriver !","Chaque pas compte.","La persévérance paie toujours.","Vos efforts portent leurs fruits.","N'abandonnez jamais.","Croyez en vos rêves.","Votre énergie fait la différence.","Transformez vos idées en actions.","La réussite commence maintenant.","Vous êtes capable de grandes choses."];
-phrases.forEach(p=>content.innerHTML+=`<p>${p}</p>`);
-generateBubbles();
-}
-
-if(mode==='lacherprise'){
-document.body.style.background='#a3d5d3';
-const phrases=["Laissez aller ce que vous ne pouvez contrôler.","Chaque respiration vous libère.","Le lâcher-prise est un cadeau pour soi.","Acceptez le moment présent.","La paix commence en vous.","Les pensées passent, vous restez.","Relâchez la tension de votre corps.","Soyez doux(ce) avec vous-même.","Libérez vos inquiétudes.","La sérénité est votre droit."];
-phrases.forEach(p=>content.innerHTML+=`<p>${p}</p>`);
-}
+  if(mode==='lacherprise') {
+    document.body.style.background='#a3d5d3';
+    const phrases = ["Laissez aller ce que vous ne pouvez contrôler.","Chaque respiration vous libère.","Le lâcher-prise est un cadeau pour soi.","Acceptez le moment présent.","La paix commence en vous.","Les pensées passent, vous restez.","Relâchez la tension de votre corps.","Soyez doux(ce) avec vous-même.","Libérez vos inquiétudes.","La sérénité est votre droit."];
+    phrases.forEach(p=>content.innerHTML+=`<p>${p}</p>`);
+  }
 }
 
 // Respiration guidée
 let breatheInterval;
-function startBreathing(){
-const circle=document.getElementById('circle');
-const sequence=[{scale:1.5,duration:4000,text:"Inspirez"},{scale:1.5,duration:1000,text:"Pause"},{scale:1,duration:5000,text:"Expirez"},{scale:1,duration:1000,text:"Pause"}];
-let i=0;
-function nextStep(){
-const step=sequence[i];
-circle.style.transition=`transform ${step.duration/1000}s ease-in-out`;
-circle.style.transform=`scale(${step.scale})`;
-content.querySelector('p').innerText=step.text;
-i=(i+1)%sequence.length;
-breatheInterval=setTimeout(nextStep,step.duration);
-}
-nextStep();
+function startBreathing() {
+  clearInterval(breatheInterval);
+  const circle = document.getElementById('circle');
+  const sequence = [
+    {scale:1.5, duration:4000, text:"Inspirez"},
+    {scale:1.5, duration:1000, text:"Pause"},
+    {scale:1, duration:5000, text:"Expirez"},
+    {scale:1, duration:1000, text:"Pause"}
+  ];
+  let i=0;
+  function nextStep() {
+    const step = sequence[i];
+    circle.style.transition = `transform ${step.duration/1000}s ease-in-out`;
+    circle.style.transform = `scale(${step.scale})`;
+    content.querySelector('p').innerText=step.text;
+    i=(i+1)%sequence.length;
+    breatheInterval = setTimeout(nextStep, step.duration);
+  }
+  nextStep();
 }
 
 // Coeurs aléatoires
-function generateHearts(){hearts.innerHTML='';for(let i=0;i<20;i++){const heart=document.createElement('div');heart.className='heart';heart.style.left=Math.random()*100+'%';heart.style.animationDuration=(3+Math.random()*5)+'s';heart.innerHTML='❤️';hearts.appendChild(heart);}}
-function generateBubbles(){bubbles.innerHTML='';for(let i=0;i<20;i++){const bubble=document.createElement('div');bubble.className='bubble';bubble.style.left=Math.random()*100+'%';const size=10+Math.random()*20;bubble.style.width=size+'px';bubble.style.height=size+'px';bubble.style.animationDuration=(4+Math.random()*4)+'s';bubbles.appendChild(bubble);}}
+function generateHearts() {
+  hearts.innerHTML='';
+  for(let i=0;i<20;i++){
+    const heart=document.createElement('div');
+    heart.className='heart';
+    heart.style.left=Math.random()*100+'%';
+    heart.style.animationDuration=(3+Math.random()*5)+'s';
+    heart.innerHTML='❤️';
+    hearts.appendChild(heart);
+  }
+}
 
-// Changer musique
-function changeMusic(url){music.src=url;music.play();}
+// Bulles aléatoires
+function generateBubbles(){
+  bubbles.innerHTML='';
+  for(let i=0;i<20;i++){
+    const bubble=document.createElement('div');
+    bubble.className='bubble';
+    bubble.style.left=Math.random()*100+'%';
+    const size=10+Math.random()*20;
+    bubble.style.width=size+'px'; bubble.style.height=size+'px';
+    bubble.style.animationDuration=(4+Math.random()*4)+'s';
+    bubbles.appendChild(bubble);
+  }
+}
 </script>
 
 </body>

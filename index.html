@@ -1,226 +1,216 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Mini-app réconfort magique 💖</title>
-  <style>
-    body {
-      background: #1e1e2f;
-      color: #f5f5f5;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 80px;
-      transition: background 0.5s;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Soutien 💖</title>
 
-    button {
-      padding: 16px 28px;
-      font-size: 20px;
-      border: none;
-      border-radius: 14px;
-      background: #6c8cff;
-      color: white;
-      cursor: pointer;
-      margin: 10px;
-      transition: transform 0.2s, background 0.5s;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff0f3;
+  text-align: center;
+  transition: background 0.8s, color 0.8s;
+  overflow-x: hidden;
+}
 
-    button:hover {
-      transform: scale(1.1);
-    }
+h1 { margin-top: 30px; }
 
-    #message {
-      margin-top: 40px;
-      font-size: 26px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.5;
-      opacity: 0;
-      transition: opacity 0.8s;
-      position: relative;
-    }
+.section { margin: 25px auto; max-width: 700px; }
 
-    .emoji {
-      display: inline-block;
-      animation: float 1s ease forwards;
-      position: relative;
-    }
+button {
+  padding: 14px 22px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  background: #ff4d6d;
+  color: white;
+  cursor: pointer;
+  margin: 8px;
+  transition: transform .2s;
+}
 
-    @keyframes float {
-      0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-30px) rotate(360deg); opacity: 0; }
-    }
+button:hover { transform: scale(1.08); }
 
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: #fff3b0;
-      animation: confetti-fall 2s linear forwards;
-      border-radius: 50%;
-    }
+#message { font-size: 24px; margin-top: 15px; }
 
-    @keyframes confetti-fall {
-      0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
-    }
+img {
+  max-width: 220px;
+  border-radius: 12px;
+  margin-top: 15px;
+  box-shadow: 0 8px 18px rgba(0,0,0,.15);
+}
 
-    #respiration {
-      margin-top: 30px;
-      font-size: 24px;
-      color: #ffe0b0;
-    }
+textarea {
+  width: 90%;
+  height: 90px;
+  border-radius: 10px;
+  padding: 10px;
+}
 
-    img {
-      max-width: 200px;
-      display: block;
-      margin: 20px auto;
-      border-radius: 12px;
-    }
+/* 🌙 Mode nuit */
+.dark {
+  background: #1b1b2f;
+  color: #eee;
+}
 
-    /* ---------------- Mobile Responsive ---------------- */
-    @media (max-width: 600px) {
-      body {
-        padding-top: 50px;
-        font-size: 16px;
-      }
+/* ✨ Animation bulles */
+.bulle {
+  position: fixed;
+  bottom: -50px;
+  background: rgba(255,255,255,.6);
+  border-radius: 50%;
+  animation: monter linear infinite;
+}
 
-      #message {
-        font-size: 20px;
-        max-width: 90%;
-      }
+@keyframes monter {
+  to { transform: translateY(-110vh); opacity: 0; }
+}
 
-      button {
-        padding: 12px 20px;
-        font-size: 18px;
-      }
-
-      #respiration {
-        font-size: 20px;
-      }
-
-      img {
-        max-width: 150px;
-      }
-    }
-  </style>
+/* 💔 Mode très difficile */
+.difficile {
+  background: linear-gradient(#2b0000, #000);
+  color: #ffdede;
+}
+</style>
 </head>
 
 <body>
 
-  <h1>🌸 Coffre magique de réconfort 🌸</h1>
+<h1>💖 Espace Soutien 💖</h1>
 
-  <button onclick="reconfort()">Appuie ici 🫶</button>
-  <button onclick="respirer()">Respiration guidée 🌬️</button>
-
+<div class="section">
+  <button onclick="message()">Message doux ❤️</button>
+  <button onclick="modeDifficile()">Jour très difficile 💔</button>
   <p id="message"></p>
-  <p id="respiration"></p>
+</div>
 
-  <audio id="sound"></audio>
-  <audio id="musique" loop></audio>
+<div class="section">
+  <h3>🌙 Suivi d’humeur</h3>
+  <button onclick="humeur('😢')">😢</button>
+  <button onclick="humeur('😔')">😔</button>
+  <button onclick="humeur('😐')">😐</button>
+  <button onclick="humeur('🙂')">🙂</button>
+  <button onclick="humeur('😊')">😊</button>
+  <p id="humeurTxt"></p>
+</div>
 
-  <script>
-    // ---------------- Variables faciles à modifier ----------------
-    const messages = [
-      "Tu n’as pas besoin d’aller bien pour continuer 🌙",
-      "Respire lentement. Tu es encore là 🍃",
-      "Chaque petit pas compte 🌸",
-      "C’est ok de juste respirer aujourd’hui 🫁",
-      "Des étoiles brillent pour toi ✨",
-      "Un câlin virtuel pour toi 🤗",
-      "Le soleil se lèvera encore demain 🌅",
-      "Ta présence fait la différence 💖",
-      "Chaque souffle que tu prends est un pas vers la paix 🌬️💖",
-      "Même petit, ton courage fait une énorme différence 🌈",
-      "Tu es assez. Tu es précieux·se, exactement comme tu es ✨"
+<div class="section">
+  <h3>📝 Écris ce que tu ressens</h3>
+  <textarea id="journal"></textarea><br>
+  <button onclick="save()">Sauvegarder</button>
+</div>
+
+<audio id="music" loop></audio>
+
+<script>
+
+// 🎵 MUSIQUE (mets ton lien RAW)
+const music = document.getElementById("music");
+music.src = "TON_LIEN_MUSIQUE";
+
+let musicStarted = false;
+
+// 💌 Messages
+const messages = [
+"Respire doucement… je suis là ❤️",
+"Tu n’as pas besoin d’être fort·e aujourd’hui 💗",
+"Un pas à la fois 🌸",
+"Tu comptes énormément 💖",
+"Ce moment passera 🌙"
 ];
 
+// 🖼️ Images RAW
+const images = [
+"TON_IMAGE_1",
+"TON_IMAGE_2",
+"TON_IMAGE_3"
+];
 
-    const colors = ["#ff9cee", "#a1cfff", "#fff3b0", "#b0ffe0", "#d1b0ff", "#ffb0b0", "#ffe0b0", "#b0ffd4"];
-    const emojis = ["🌸","💛","🧸","✨","🍃","🫶","🌈"];
+// 💬 Message normal
+function message() {
 
-    // ---------------- Sons ----------------
-    const soundUrl = "https://raw.githubusercontent.com/ton-nom-utilisateur/generateur-jours-difficiles/main/button-click.mp3";
-    const musicUrl = "https://raw.githubusercontent.com/ton-nom-utilisateur/generateur-jours-difficiles/main/musique.mp3";
+  if (!musicStarted) {
+    music.play().catch(()=>{});
+    musicStarted = true;
+  }
 
-    const sound = document.getElementById("sound");
-    sound.src = soundUrl;
+  const m = messages[Math.floor(Math.random()*messages.length)];
+  const img = images[Math.floor(Math.random()*images.length)];
 
-    const musique = document.getElementById("musique");
-    musique.src = musicUrl;
+  document.getElementById("message").innerHTML =
+    m + "<br><img src='"+img+"'>";
+}
 
-    let musiqueJouee = false; // Pour mobile, lancer musique au premier clic
+// 💔 Mode jour très difficile
+function modeDifficile() {
 
-    // ---------------- Fonction reconfort ----------------
-    function reconfort() {
-      // Lancer la musique sur mobile au premier clic
-      if (!musiqueJouee) {
-        musique.play().catch(() => {});
-        musiqueJouee = true;
-      }
+  document.body.classList.add("difficile");
 
-      const messageEl = document.getElementById("message");
-      const hasard = Math.floor(Math.random() * messages.length);
-      messageEl.innerHTML = messages[hasard];
+  document.getElementById("message").innerHTML =
+  "Respire avec moi…<br>Tu n’es pas seul·e.<br>Reste juste ici maintenant 💔";
 
-      // Emoji flottant
-      const emojiSpan = document.createElement("span");
-      emojiSpan.className = "emoji";
-      emojiSpan.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      messageEl.appendChild(emojiSpan);
+  vibration();
+}
 
-      // Image/GIF aléatoire (adapté mobile)
-      const img = document.createElement("img");
-      const isMobile = window.innerWidth < 600;
-      img.src = images[Math.floor(Math.random() * images.length)];
-      messageEl.appendChild(img);
+// 📳 Vibration douce (mobile)
+function vibration() {
+  if (navigator.vibrate) navigator.vibrate([200,100,200]);
+}
 
-      // Animation apparition
-      messageEl.style.opacity = 0;
-      setTimeout(() => { messageEl.style.opacity = 1; }, 50);
+// 🌙 Mode nuit automatique
+function modeNuitAuto() {
+  const heure = new Date().getHours();
+  if (heure >= 20 || heure < 7) {
+    document.body.classList.add("dark");
+  }
+}
+modeNuitAuto();
 
-      // Changer la couleur de fond
-      document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+// 😊 Suivi d’humeur
+function humeur(emoji) {
+  localStorage.setItem("humeur", emoji);
+  document.getElementById("humeurTxt").textContent =
+    "Humeur enregistrée : " + emoji;
+}
 
-      // Bouton “pop”
-      const button = document.querySelector("button");
-      button.style.transform = "scale(1.2)";
-      setTimeout(() => { button.style.transform = "scale(1)"; }, 200);
+// 📝 Journal
+function save() {
+  localStorage.setItem("journal",
+    document.getElementById("journal").value);
+  alert("Sauvegardé 💖");
+}
 
-      // Confettis doux (moins sur mobile)
-      let confettiCount = isMobile ? 3 : 5;
-      for (let i = 0; i < confettiCount; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        document.body.appendChild(confetti);
-        setTimeout(() => { confetti.remove(); }, 2000);
-      }
+// Charger données
+window.onload = function() {
 
-      // Jouer le son
-      sound.play();
-    }
+  const h = localStorage.getItem("humeur");
+  if (h) document.getElementById("humeurTxt").textContent =
+    "Dernière humeur : " + h;
 
-    // ---------------- Fonction respiration ----------------
-    function respirer() {
-      const p = document.getElementById("respiration");
-      p.textContent = "Inspire…";
-      setTimeout(() => { p.textContent = "Retient…"; }, 4000);
-      setTimeout(() => { p.textContent = "Expire…"; }, 8000);
-      setTimeout(() => { p.textContent = ""; }, 12000);
-    }
+  const j = localStorage.getItem("journal");
+  if (j) document.getElementById("journal").value = j;
 
-  </script>
+  bulles();
+}
+
+// ✨ Bulles immersives
+function bulles() {
+  setInterval(() => {
+    const b = document.createElement("div");
+    b.className = "bulle";
+    b.style.left = Math.random()*100 + "vw";
+    b.style.width = b.style.height =
+      10 + Math.random()*25 + "px";
+    b.style.animationDuration =
+      6 + Math.random()*6 + "s";
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),12000);
+  }, 500);
+}
+
+</script>
 
 </body>
 </html>
-
-
-
-
-
-
-

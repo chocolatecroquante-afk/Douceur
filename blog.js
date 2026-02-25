@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const newTitle = document.getElementById('new-title');
   const newContent = document.getElementById('new-content');
 
-  // --- Articles par défaut ---
-  const defaultArticles = [
+  // --- Vérifier LocalStorage ---
+  let articles = JSON.parse(localStorage.getItem('blogArticles')) || [
     {
       title: "L'importance de parler de ses émotions",
       content: `
@@ -85,10 +85,15 @@ document.addEventListener("DOMContentLoaded", function() {
     return card;
   }
 
-  // --- Ajouter articles par défaut ---
-  defaultArticles.forEach(a => {
-    articlesContainer.appendChild(createArticleCard(a));
-  });
+  // --- Afficher tous les articles ---
+  function renderArticles(){
+    articlesContainer.innerHTML = '';
+    articles.forEach(a => {
+      articlesContainer.appendChild(createArticleCard(a));
+    });
+  }
+
+  renderArticles();
 
   // --- Ajouter un nouvel article ---
   addBtn.addEventListener('click', () => {
@@ -96,14 +101,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const contentText = newContent.value.trim();
     if(title && contentText){
       const newArticle = {title:title, content:`<p>${contentText.replace(/\n/g,"</p><p>")}</p>`};
-      articlesContainer.prepend(createArticleCard(newArticle));
+      articles.unshift(newArticle); // ajoute en début
+      localStorage.setItem('blogArticles', JSON.stringify(articles)); // sauvegarde
+      renderArticles();
       newTitle.value=''; newContent.value='';
     } else {
       alert('Merci de remplir le titre et le contenu.');
     }
   });
 
-  // --- Boutons navigation ---
+  // --- Navigation blog / cocon ---
   blogBtn.addEventListener('click', ()=>{contentDiv.style.display='none';blogSection.style.display='flex';});
   backBtn.addEventListener('click', ()=>{blogSection.style.display='none';contentDiv.style.display='block';});
 

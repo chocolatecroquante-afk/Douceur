@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg, #e8f3f1, #d7ebe7, #f0f7f6);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  color: #2e3d3a;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+@keyframes gradientMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.articles {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  transition: 0.4s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+a {
+  text-decoration: none;
+  color: #4a7c75;
+  font-weight: bold;
+}
+
+.date {
+  font-size: 0.9em;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}

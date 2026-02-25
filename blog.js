@@ -1,64 +1,57 @@
-// -----------------------------
-// 1️⃣ Afficher la section Blog
-// -----------------------------
+// Affichage / retour blog
 function showBlog() {
-  const blogSection = document.getElementById('blog-section');
-  const contentDiv = document.getElementById('content');
-  // Cacher le contenu principal du cocon
-  contentDiv.style.display = 'none';
-  // Afficher la section blog
-  blogSection.style.display = 'block';
+  document.getElementById('content').style.display='none';
+  document.getElementById('blog-section').style.display='flex';
 }
-
-// -----------------------------
-// 2️⃣ Revenir au cocon interactif
-// -----------------------------
 function showCocon() {
-  const blogSection = document.getElementById('blog-section');
-  const contentDiv = document.getElementById('content');
-  // Cacher la section blog
-  blogSection.style.display = 'none';
-  // Réafficher le cocon
-  contentDiv.style.display = 'block';
+  document.getElementById('blog-section').style.display='none';
+  document.getElementById('content').style.display='block';
 }
 
-// -----------------------------
-// 3️⃣ Ajouter un nouvel article
-// -----------------------------
+// Gestion ajout articles
 const addBtn = document.getElementById('add-btn');
 const newTitle = document.getElementById('new-title');
 const newContent = document.getElementById('new-content');
 const articlesContainer = document.getElementById('articles');
 
+// Articles publics par défaut
+const defaultArticles = [
+  {title:"L'importance de parler de ses émotions", content:"Partager ses émotions avec un proche ou un professionnel peut réduire le stress et l'anxiété."},
+  {title:"Gérer l'anxiété au quotidien", content:"Quelques exercices simples de respiration ou de méditation peuvent aider à retrouver le calme."},
+  {title:"Page 3114 - Ressources de soutien", content:"Cet article fictif représente la page 3114 pour référence. Vous pouvez y ajouter votre contenu sécurisé."},
+  {title:"Prendre soin de sa santé mentale", content:"Identifier les sources de stress et pratiquer l'auto-compassion favorisent un bien-être durable."}
+];
+
+// Ajouter les articles par défaut au chargement
+defaultArticles.forEach(a=>{
+  const card=document.createElement('div');
+  card.className='card';
+  card.dataset.content=a.content;
+  card.innerHTML=`<h2>${a.title}</h2><p>Cliquez pour voir plus...</p><span class="date">Publié le ${new Date().toLocaleDateString()}</span>`;
+  card.addEventListener('click',()=>{
+    card.querySelector('p').innerText=card.dataset.content;
+    card.style.background='rgba(255,255,255,0.95)';
+    card.style.boxShadow='0 12px 30px rgba(0,0,0,0.1)';
+  });
+  articlesContainer.appendChild(card);
+});
+
+// Ajouter un nouvel article via le formulaire
 addBtn.addEventListener('click', () => {
   const title = newTitle.value.trim();
-  const content = newContent.value.trim();
-
-  if (title && content) {
-    // Créer la carte article
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.content = content;
-
-    card.innerHTML = `
-      <h2>${title}</h2>
-      <p>Cliquez pour voir plus...</p>
-      <span class="date">Publié le ${new Date().toLocaleDateString()}</span>
-    `;
-
-    // Ajouter le clic interactif pour révéler le contenu
-    card.addEventListener('click', () => {
-      card.querySelector('p').innerText = card.dataset.content;
-      card.style.background = 'rgba(255,255,255,0.95)';
-      card.style.boxShadow = '0 12px 30px rgba(0,0,0,0.1)';
+  const contentText = newContent.value.trim();
+  if(title && contentText){
+    const card=document.createElement('div');
+    card.className='card';
+    card.dataset.content=contentText;
+    card.innerHTML=`<h2>${title}</h2><p>Cliquez pour voir plus...</p><span class="date">Publié le ${new Date().toLocaleDateString()}</span>`;
+    card.addEventListener('click', ()=>{
+      card.querySelector('p').innerText=card.dataset.content;
+      card.style.background='rgba(255,255,255,0.95)';
+      card.style.boxShadow='0 12px 30px rgba(0,0,0,0.1)';
     });
-
-    // Ajouter l'article en haut de la liste
     articlesContainer.prepend(card);
-
-    // Vider les champs du formulaire
-    newTitle.value = '';
-    newContent.value = '';
+    newTitle.value=''; newContent.value='';
   } else {
     alert('Merci de remplir le titre et le contenu.');
   }

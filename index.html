@@ -71,6 +71,7 @@
   <button onclick="switchMode('motivation')">Motivation</button>
   <button onclick="switchMode('lacherprise')">Pensée & Lâcher prise</button>
   <button onclick="switchMode('respiration')">Respiration guidée</button>
+  <button onclick="showBlog()">Blog</button>
 </nav>
 
 <main id="main">
@@ -84,6 +85,20 @@
   <div class="clouds" id="clouds"></div>
   <div class="waves" id="waves"></div>
 </main>
+  <!-- Section Blog -->
+<div class="blog-section" id="blog-section" style="display:none;">
+  <h2 style="text-align:center; color:#4a7c75; margin-bottom:20px;">📰 Blog Douceur</h2>
+  <div class="articles" id="articles"></div>
+
+  <!-- Formulaire pour ajouter un article -->
+  <div class="add-article">
+    <h3>📝 Ajouter un nouvel article</h3>
+    <input type="text" id="new-title" placeholder="Titre de l'article" style="width:100%;padding:8px;margin-bottom:10px;border-radius:10px;border:1px solid #ccc;">
+    <textarea id="new-content" placeholder="Contenu de l'article" style="width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;"></textarea>
+    <button id="add-btn" style="padding:10px 20px;border:none;border-radius:25px;background:#4a7c75;color:white;font-weight:bold;cursor:pointer;">Ajouter l'article</button>
+  </div>
+</div>
+
 
 <!-- Respiration -->
 <div id="respiration-container">
@@ -235,3 +250,4 @@ function startBreathing(){
 
 </body>
 </html>
+

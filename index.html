@@ -1,65 +1,67 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Douceur</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Douceur</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
-  <!-- CSS interne pour ton cocon -->
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-    <script src="blog.js"></script>
-    body, html{height:100%;width:100%;overflow:hidden;display:flex;flex-direction:column;align-items:center;transition:background 1s;}
-    header{padding:20px;text-align:center;font-size:4em;font-family:'Dancing Script', cursive;font-weight:700;color:#ff6f91;text-shadow:2px 2px 15px rgba(0,0,0,0.3);}
-    nav{margin:20px 0;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
-    nav button{padding:12px 25px;border:none;border-radius:25px;cursor:pointer;font-size:1.2em;transition:0.3s;background:#f8f8f8;}
-    nav button:hover{opacity:0.8;}
-    main{flex:1;display:flex;justify-content:center;align-items:center;position:relative;width:100%;height:100%;overflow:hidden;text-align:center;padding:20px;}
-    .content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.85);box-shadow:0 5px 15px rgba(0,0,0,0.1);position:relative;z-index:2;cursor:pointer;}
-    .content p{margin:10px 0;font-size:1.3em;line-height:1.6em;text-shadow:1px 1px 2px rgba(0,0,0,0.1);}
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+body, html{height:100%;width:100%;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;transition:background 1s;}
+header{padding:20px;text-align:center;font-size:4em;font-family:'Dancing Script', cursive;font-weight:700;color:#ff6f91;text-shadow:2px 2px 15px rgba(0,0,0,0.3);}
+nav{margin:20px 0;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
+nav button{padding:12px 25px;border:none;border-radius:25px;cursor:pointer;font-size:1.2em;transition:0.3s;background:#f8f8f8;}
+nav button:hover{opacity:0.8;}
+main{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;width:100%;padding:20px;}
+.content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.85);box-shadow:0 5px 15px rgba(0,0,0,0.1);position:relative;z-index:2;cursor:pointer;}
+.content p{margin:10px 0;font-size:1.3em;line-height:1.6em;text-shadow:1px 1px 2px rgba(0,0,0,0.1);}
 
-    /* Respiration */
-    #respiration-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;z-index:3;display:none;}
-    .breath-circle{width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.7);margin:10px;box-shadow:0 0 25px rgba(255,200,200,0.5);}
+/* Blog Section */
+.blog-section{
+  width:100%;
+  max-width:800px;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+}
+.articles{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  width:100%;
+}
+.card{
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+  transition:0.4s;
+  cursor:pointer;
+}
+.card:hover{
+  transform:translateY(-5px);
+}
+.card h2{margin-bottom:10px;color:#4a7c75;}
+.card p{line-height:1.5em;font-size:1.1em;margin-bottom:10px;}
+.date{font-size:0.9em;opacity:0.6;}
+.add-article{
+  margin-top:30px;
+  padding:20px;
+  width:100%;
+  background:rgba(255,255,255,0.85);
+  border-radius:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+.add-article h3{margin-bottom:15px;color:#4a7c75;}
+.add-article button:hover{opacity:0.85;}
 
-    /* Particules */
-    .particle{position:absolute;width:6px;height:6px;background:white;border-radius:50%;opacity:0.7;pointer-events:none;animation:particleMove 10s linear infinite;}
-    @keyframes particleMove{0%{transform:translateY(100vh) scale(0.3);opacity:0.5;}50%{opacity:1;}100%{transform:translateY(-10vh) scale(1);opacity:0;}}
-    .particles-container{position:absolute;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
-
-    /* Coeurs */
-    .heart{position:absolute;font-size:24px;color:pink;animation:floatHeart 6s linear infinite;}
-    @keyframes floatHeart{0%{transform:translateY(100%) scale(0.5) rotate(0deg);opacity:0.7;}50%{opacity:1;}100%{transform:translateY(-100%) scale(1) rotate(360deg);opacity:0;}}
-
-    /* Bulles */
-    .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,0.8);animation:floatBubble 6s linear infinite;}
-    @keyframes floatBubble{0%{transform:translate(0,100%) scale(0.5);opacity:0.6;}50%{opacity:1;}100%{transform:translate(50vw,-100%) scale(1);opacity:0;}}
-
-    /* Nuages */
-    .cloud{position:absolute;width:200px;height:60px;background:rgba(255,255,255,0.6);border-radius:50%;animation:cloudMove 60s linear infinite;}
-    @keyframes cloudMove{0%{transform:translateX(-250px);}100%{transform:translateX(100vw);}}
-
-    /* Vagues */
-    .waves{display:none;background:linear-gradient(120deg,rgba(255,255,255,0.2) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0.2) 75%,transparent 75%,transparent);background-size:50px 50px;animation:waveMove 10s linear infinite;}
-    @keyframes waveMove{0%{background-position:0 0;}100%{background-position:50px 50px;}}
-
-    /* Responsive */
-    @media(max-width:768px){
-      header{font-size:3em;}
-      nav button{font-size:1em;padding:10px 18px;}
-      .content p{font-size:1.1em;}
-      .breath-circle{width:140px;height:140px;}
-    }
-    @media(max-width:480px){
-      header{font-size:2.2em;}
-      nav button{font-size:0.9em;padding:8px 14px;}
-      .content p{font-size:1em;}
-      .breath-circle{width:120px;height:120px;}
-    }
-  </style>
+/* Responsive */
+@media(max-width:768px){header{font-size:3em;}nav button{font-size:1em;padding:10px 18px;}.content p{font-size:1.1em;}}
+@media(max-width:480px){header{font-size:2.2em;}nav button{font-size:0.9em;padding:8px 14px;}.content p{font-size:1em;}}
+</style>
 </head>
 
 <body>
@@ -76,180 +78,82 @@
 </nav>
 
 <main id="main">
+  <!-- Cocon -->
   <div class="content" id="content">
     <p>Cliquez sur un module pour afficher une phrase relaxante.</p>
   </div>
 
-  <div class="particles-container" id="particles"></div>
-  <div class="hearts" id="hearts"></div>
-  <div class="bubbles" id="bubbles"></div>
-  <div class="clouds" id="clouds"></div>
-  <div class="waves" id="waves"></div>
-</main>
-  <!-- Section Blog -->
-<div class="blog-section" id="blog-section" style="display:none;">
-  <h2 style="text-align:center; color:#4a7c75; margin-bottom:20px;">📰 Blog Douceur</h2>
-  <div class="articles" id="articles"></div>
+  <!-- Blog -->
+  <div class="blog-section" id="blog-section">
+    <button onclick="showCocon()" style="padding:10px 20px;border:none;border-radius:25px;background:#ff6f91;color:white;font-weight:bold;cursor:pointer;margin-bottom:20px;">← Retour à l'Espace Douceur</button>
+    <h2 style="text-align:center; margin-bottom:20px;">📰 Blog Douceur</h2>
+    <div class="articles" id="articles"></div>
 
-  <!-- Formulaire pour ajouter un article -->
-  <div class="add-article">
-    <h3>📝 Ajouter un nouvel article</h3>
-    <input type="text" id="new-title" placeholder="Titre de l'article" style="width:100%;padding:8px;margin-bottom:10px;border-radius:10px;border:1px solid #ccc;">
-    <textarea id="new-content" placeholder="Contenu de l'article" style="width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;"></textarea>
-    <button id="add-btn" style="padding:10px 20px;border:none;border-radius:25px;background:#4a7c75;color:white;font-weight:bold;cursor:pointer;">Ajouter l'article</button>
+    <!-- Formulaire -->
+    <div class="add-article">
+      <h3>📝 Ajouter un nouvel article</h3>
+      <input type="text" id="new-title" placeholder="Titre de l'article" style="width:100%;padding:8px;margin-bottom:10px;border-radius:10px;border:1px solid #ccc;">
+      <textarea id="new-content" placeholder="Contenu de l'article" style="width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;"></textarea>
+      <button id="add-btn" style="padding:10px 20px;border:none;border-radius:25px;background:#4a7c75;color:white;font-weight:bold;cursor:pointer;">Ajouter l'article</button>
+    </div>
   </div>
-</div>
+</main>
 
-
-<!-- Respiration -->
-<div id="respiration-container">
-  <div class="breath-circle" id="circle"></div>
-  <p id="breath-text">Inspirez → Pause → Expirez → Pause</p>
-</div>
-
-<!-- JS Interactif -->
 <script>
+// -----------------------------
+// Cocon phrases et modules
+// -----------------------------
 const content=document.getElementById('content');
-const particlesContainer=document.getElementById('particles');
-const clouds=document.getElementById('clouds');
-const hearts=document.getElementById('hearts');
-const bubbles=document.getElementById('bubbles');
-const waves=document.getElementById('waves');
-const circle=document.getElementById('circle');
-const breathText=document.getElementById('breath-text');
-const respContainer=document.getElementById('respiration-container');
 let breatheInterval;
-
-// Phrases avec emojis
-const phrasesModules={
-  confiance:["💪 Je mérite de m'aimer.","🌟 Je suis capable de réussir.","🦋 J'ai confiance en mes décisions.","💫 Chaque jour, je deviens plus fort(e).","🌈 Je suis fier(ère) de moi.","💎 Mon opinion compte.","🔥 Je peux surmonter les défis.","✨ Je crois en mes capacités.","🌟 Je suis digne de bonheur.","💪 Je m'accepte tel(le) que je suis."],
-  douceur:["💖 Vous êtes aimé(e) tel(le) que vous êtes.","🤗 Chaque câlin apporte douceur à votre cœur.","🌸 Prenez soin de vous aujourd'hui.","💝 La tendresse est partout autour de vous.","🌷 Respirez la sérénité.","💗 Vous méritez la douceur.","🌹 Les petits gestes apportent de grandes émotions.","😊 Souriez, vous êtes précieux(se).","💞 Laissez la paix vous envelopper.","🌸 Chaque instant doux compte."],
-  motivation:["🚀 Vous pouvez y arriver !","🔥 Chaque pas compte.","🌈 La persévérance paie toujours.","💪 Vos efforts portent leurs fruits.","🏆 N'abandonnez jamais.","✨ Croyez en vos rêves.","⚡ Votre énergie fait la différence.","🚀 Transformez vos idées en actions.","💥 La réussite commence maintenant.","🌟 Vous êtes capable de grandes choses."],
-  lacherprise:["🌊 Laissez aller ce que vous ne pouvez contrôler.","🕊️ Chaque respiration vous libère.","🍃 Le lâcher-prise est un cadeau pour soi.","🌾 Acceptez le moment présent.","💨 La paix commence en vous.","☁️ Les pensées passent, vous restez.","🌿 Relâchez la tension de votre corps.","💧 Soyez doux(ce) avec vous-même.","🍂 Libérez vos inquiétudes.","🌊 La sérénité est votre droit."]
-};
-
-// Particules
-function generateParticles(color='white',count=60){
-  particlesContainer.innerHTML='';
-  for(let i=0;i<count;i++){
-    const p=document.createElement('div');
-    p.className='particle';
-    p.style.left=Math.random()*100+'%';
-    p.style.width=4+Math.random()*6+'px';
-    p.style.height=p.style.width;
-    p.style.background=color;
-    p.style.animationDuration=(5+Math.random()*5)+'s';
-    particlesContainer.appendChild(p);
-  }
-}
-
-// Coeurs Douceur
-function generateHearts(){
-  hearts.innerHTML='';
-  for(let i=0;i<35;i++){
-    const h=document.createElement('div');
-    h.className='heart';
-    h.style.left=Math.random()*100+'%';
-    h.style.fontSize=14+Math.random()*28+'px';
-    h.style.animationDuration=(3+Math.random()*6)+'s';
-    hearts.appendChild(h);
-  }
-}
-
-// Bulles Motivation
-function generateBubbles(){
-  bubbles.innerHTML='';
-  for(let i=0;i<35;i++){
-    const b=document.createElement('div');
-    b.className='bubble';
-    b.style.left=Math.random()*100+'%';
-    const s=12+Math.random()*24;
-    b.style.width=s+'px';
-    b.style.height=s+'px';
-    b.style.animationDuration=(4+Math.random()*4)+'s';
-    bubbles.appendChild(b);
-  }
-}
-
-// Nuages Confiance
-function createClouds(){
-  clouds.innerHTML='';
-  for(let i=0;i<8;i++){
-    const c=document.createElement('div');
-    c.className='cloud';
-    c.style.top=Math.random()*50+'%';
-    c.style.left=Math.random()*100+'%';
-    c.style.width=120+Math.random()*200+'px';
-    c.style.height=60+Math.random()*70+'px';
-    clouds.appendChild(c);
-  }
-}
-
-// Switch module
 function switchMode(mode){
-  clearInterval(breatheInterval);
-  clouds.style.display='none';
-  hearts.style.display='none';
-  bubbles.style.display='none';
-  waves.style.display='none';
-  particlesContainer.style.display='block';
-  respContainer.style.display='none';
-  content.innerHTML='';
-  document.body.style.background='';
-
-  if(mode==='respiration'){
-    respContainer.style.display='flex';
-    particlesContainer.style.display='none';
-    startBreathing();
-    return;
-  }
-
-  if(mode==='confiance'){
-    document.body.style.background='linear-gradient(120deg,#ffe6f0,#fddde6)';
-    clouds.style.display='block';
-    createClouds();
-    generateParticles('white',40);
-  }
-  if(mode==='douceur'){
-    document.body.style.background='linear-gradient(120deg,#fff0f5,#ffeef1)';
-    hearts.style.display='block';
-    generateHearts();
-    generateParticles('pink',50);
-  }
-  if(mode==='motivation'){
-    document.body.style.background='linear-gradient(120deg,#fff9c4,#fff59d)';
-    bubbles.style.display='block';
-    generateBubbles();
-    generateParticles('yellow',40);
-  }
-  if(mode==='lacherprise'){
-    document.body.style.background='linear-gradient(120deg,#a3d5d3,#76c7c0)';
-    waves.style.display='block';
-    generateParticles('white',30);
-  }
-
+  const phrasesModules={
+    confiance:["💪 Je mérite de m'aimer.","🌟 Je suis capable de réussir."],
+    douceur:["💖 Vous êtes aimé(e) tel(le) que vous êtes.","🤗 Chaque câlin apporte douceur."],
+    motivation:["🚀 Vous pouvez y arriver !","🔥 Chaque pas compte."],
+    lacherprise:["🌊 Laissez aller ce que vous ne pouvez contrôler.","🕊️ Chaque respiration vous libère."]
+  };
   const phrases=phrasesModules[mode];
   const phrase=phrases[Math.floor(Math.random()*phrases.length)];
   content.innerHTML=`<p>${phrase}</p>`;
 }
 
-// Respiration cercle
-function startBreathing(){
-  const sequence=[{scale:1.5,duration:4000,text:"Inspirez"},{scale:1.5,duration:1000,text:"Pause"},{scale:1,duration:5000,text:"Expirez"},{scale:1,duration:1000,text:"Pause"}];
-  let i=0;
-  function nextStep(){
-    const step=sequence[i];
-    circle.style.transition=`transform ${step.duration/1000}s ease-in-out`;
-    circle.style.transform=`scale(${step.scale})`;
-    breathText.innerText=step.text;
-    i=(i+1)%sequence.length;
-    breatheInterval=setTimeout(nextStep,step.duration);
-  }
-  nextStep();
+// -----------------------------
+// Blog JS
+// -----------------------------
+function showBlog() {
+  document.getElementById('content').style.display='none';
+  document.getElementById('blog-section').style.display='flex';
 }
+function showCocon() {
+  document.getElementById('blog-section').style.display='none';
+  document.getElementById('content').style.display='block';
+}
+
+const addBtn = document.getElementById('add-btn');
+const newTitle = document.getElementById('new-title');
+const newContent = document.getElementById('new-content');
+const articlesContainer = document.getElementById('articles');
+
+addBtn.addEventListener('click', () => {
+  const title = newTitle.value.trim();
+  const contentText = newContent.value.trim();
+  if(title && contentText){
+    const card=document.createElement('div');
+    card.className='card';
+    card.dataset.content=contentText;
+    card.innerHTML=`<h2>${title}</h2><p>Cliquez pour voir plus...</p><span class="date">Publié le ${new Date().toLocaleDateString()}</span>`;
+    card.addEventListener('click', ()=>{
+      card.querySelector('p').innerText=card.dataset.content;
+      card.style.background='rgba(255,255,255,0.95)';
+      card.style.boxShadow='0 12px 30px rgba(0,0,0,0.1)';
+    });
+    articlesContainer.prepend(card);
+    newTitle.value=''; newContent.value='';
+  } else {
+    alert('Merci de remplir le titre et le contenu.');
+  }
+});
 </script>
 
 </body>
 </html>
-
-

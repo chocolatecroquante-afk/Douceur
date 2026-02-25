@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
 <style>
-/* --- Styles généraux --- */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
 body, html{height:100%;width:100%;display:flex;flex-direction:column;align-items:center;transition:background 1s;}
 header{padding:20px;text-align:center;font-size:3em;font-family:'Dancing Script', cursive;font-weight:700;color:#ff6f91;text-shadow:2px 2px 15px rgba(0,0,0,0.3);}
@@ -19,7 +18,7 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;width:100%;pad
 .content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.85);box-shadow:0 5px 15px rgba(0,0,0,0.1);text-align:center;cursor:pointer;}
 .content p{margin:10px 0;font-size:1.2em;line-height:1.5em;text-shadow:1px 1px 2px rgba(0,0,0,0.1);}
 
-/* --- Blog --- */
+/* Blog */
 .blog-section{
   display:none;
   flex-direction:column;
@@ -28,40 +27,30 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;width:100%;pad
   max-width:800px;
   margin-top:20px;
 }
-.articles{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  width:100%;
-}
-.card{
-  background:rgba(255,255,255,0.9);
-  padding:20px;
-  border-radius:20px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.1);
-  cursor:pointer;
-  transition:0.3s;
-}
+.articles{display:flex;flex-direction:column;gap:20px;width:100%;}
+.card{background:rgba(255,255,255,0.9);padding:20px;border-radius:20px;box-shadow:0 6px 20px rgba(0,0,0,0.1);cursor:pointer;transition:0.3s;}
 .card:hover{transform:translateY(-3px);}
 .card h2{margin-bottom:10px;color:#4a7c75;}
 .card p{line-height:1.5em;font-size:1.1em;margin-bottom:10px;}
 .date{font-size:0.9em;opacity:0.6;}
-.add-article{
-  width:100%;
-  margin-top:20px;
-  padding:20px;
-  background:rgba(255,255,255,0.9);
-  border-radius:15px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.05);
-}
+.add-article{width:100%;margin-top:20px;padding:20px;background:rgba(255,255,255,0.9);border-radius:15px;box-shadow:0 6px 20px rgba(0,0,0,0.05);}
 .add-article h3{margin-bottom:15px;color:#4a7c75;}
-.add-article input,
-.add-article textarea{width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;}
+.add-article input, .add-article textarea{width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;}
 .add-article button{padding:10px 20px;border:none;border-radius:25px;background:#4a7c75;color:white;font-weight:bold;cursor:pointer;}
 .add-article button:hover{opacity:0.85;}
+
+/* Responsive */
+@media(max-width:768px){
+  header{font-size:2.5em;}
+  nav button{font-size:0.9em;padding:8px 12px;}
+  .content{max-width:90%;}
+}
+@media(max-width:480px){
+  header{font-size:2em;}
+  .content{max-width:95%;}
+}
 </style>
 </head>
-
 <body>
 
 <header>Espace Douceur</header>
@@ -72,22 +61,19 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;width:100%;pad
   <button onclick="switchMode('motivation')">Motivation</button>
   <button onclick="switchMode('lacherprise')">Pensée & Lâcher prise</button>
   <button onclick="switchMode('respiration')">Respiration guidée</button>
-  <button onclick="showBlog()">Blog</button>
+  <button id="blog-btn">Blog</button>
 </nav>
 
 <main id="main">
-  <!-- Cocon interactif -->
   <div class="content" id="content">
     <p>Cliquez sur un module pour afficher une phrase relaxante.</p>
   </div>
 
-  <!-- Section Blog -->
   <div class="blog-section" id="blog-section">
-    <button onclick="showCocon()" style="padding:10px 20px;border:none;border-radius:25px;background:#ff6f91;color:white;font-weight:bold;cursor:pointer;margin-bottom:20px;">← Retour à l'Espace Douceur</button>
-    <h2 style="text-align:center; margin-bottom:20px;">📰 Blog Douceur</h2>
+    <button id="back-btn" style="padding:10px 20px;border:none;border-radius:25px;background:#ff6f91;color:white;font-weight:bold;cursor:pointer;margin-bottom:20px;">← Retour à l'Espace Douceur</button>
+    <h2 style="text-align:center;margin-bottom:20px;">📰 Blog Douceur</h2>
     <div class="articles" id="articles"></div>
 
-    <!-- Formulaire pour ajouter un article -->
     <div class="add-article">
       <h3>📝 Ajouter un nouvel article</h3>
       <input type="text" id="new-title" placeholder="Titre de l'article">
@@ -97,12 +83,11 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;width:100%;pad
   </div>
 </main>
 
-<!-- JS -->
 <script src="blog.js"></script>
 
 <script>
-// --- Cocon interactif minimal ---
-const content=document.getElementById('content');
+// --- Cocon interactif simple ---
+const content = document.getElementById('content');
 function switchMode(mode){
   const phrasesModules={
     confiance:["💪 Je mérite de m'aimer.","🌟 Je suis capable de réussir."],
@@ -110,9 +95,9 @@ function switchMode(mode){
     motivation:["🚀 Vous pouvez y arriver !","🔥 Chaque pas compte."],
     lacherprise:["🌊 Laissez aller ce que vous ne pouvez contrôler.","🕊️ Chaque respiration vous libère."]
   };
-  const phrases=phrasesModules[mode];
-  const phrase=phrases[Math.floor(Math.random()*phrases.length)];
-  content.innerHTML=`<p>${phrase}</p>`;
+  const phrases = phrasesModules[mode];
+  const phrase = phrases[Math.floor(Math.random()*phrases.length)];
+  content.innerHTML = `<p>${phrase}</p>`;
 }
 </script>
 

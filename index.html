@@ -8,23 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
 <style>
+/* --- Styles généraux --- */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-body, html{height:100%;width:100%;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;transition:background 1s;}
-header{padding:20px;text-align:center;font-size:4em;font-family:'Dancing Script', cursive;font-weight:700;color:#ff6f91;text-shadow:2px 2px 15px rgba(0,0,0,0.3);}
-nav{margin:20px 0;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
-nav button{padding:12px 25px;border:none;border-radius:25px;cursor:pointer;font-size:1.2em;transition:0.3s;background:#f8f8f8;}
+body, html{height:100%;width:100%;display:flex;flex-direction:column;align-items:center;transition:background 1s;}
+header{padding:20px;text-align:center;font-size:3em;font-family:'Dancing Script', cursive;font-weight:700;color:#ff6f91;text-shadow:2px 2px 15px rgba(0,0,0,0.3);}
+nav{margin:20px 0;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+nav button{padding:10px 18px;border:none;border-radius:25px;cursor:pointer;font-size:1em;transition:0.3s;background:#f8f8f8;}
 nav button:hover{opacity:0.8;}
-main{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;width:100%;padding:20px;}
-.content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.85);box-shadow:0 5px 15px rgba(0,0,0,0.1);position:relative;z-index:2;cursor:pointer;}
-.content p{margin:10px 0;font-size:1.3em;line-height:1.6em;text-shadow:1px 1px 2px rgba(0,0,0,0.1);}
+main{flex:1;display:flex;flex-direction:column;align-items:center;width:100%;padding:20px;}
+.content{max-width:600px;padding:20px;border-radius:15px;background:rgba(255,255,255,0.85);box-shadow:0 5px 15px rgba(0,0,0,0.1);text-align:center;cursor:pointer;}
+.content p{margin:10px 0;font-size:1.2em;line-height:1.5em;text-shadow:1px 1px 2px rgba(0,0,0,0.1);}
 
-/* Blog Section */
+/* --- Blog --- */
 .blog-section{
-  width:100%;
-  max-width:800px;
   display:none;
   flex-direction:column;
   align-items:center;
+  width:100%;
+  max-width:800px;
+  margin-top:20px;
 }
 .articles{
   display:flex;
@@ -33,34 +35,30 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;position:relat
   width:100%;
 }
 .card{
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.9);
   padding:20px;
   border-radius:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.05);
-  transition:0.4s;
+  box-shadow:0 6px 20px rgba(0,0,0,0.1);
   cursor:pointer;
+  transition:0.3s;
 }
-.card:hover{
-  transform:translateY(-5px);
-}
+.card:hover{transform:translateY(-3px);}
 .card h2{margin-bottom:10px;color:#4a7c75;}
 .card p{line-height:1.5em;font-size:1.1em;margin-bottom:10px;}
 .date{font-size:0.9em;opacity:0.6;}
 .add-article{
-  margin-top:30px;
-  padding:20px;
   width:100%;
-  background:rgba(255,255,255,0.85);
-  border-radius:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+  margin-top:20px;
+  padding:20px;
+  background:rgba(255,255,255,0.9);
+  border-radius:15px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
 }
 .add-article h3{margin-bottom:15px;color:#4a7c75;}
+.add-article input,
+.add-article textarea{width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;}
+.add-article button{padding:10px 20px;border:none;border-radius:25px;background:#4a7c75;color:white;font-weight:bold;cursor:pointer;}
 .add-article button:hover{opacity:0.85;}
-
-/* Responsive */
-@media(max-width:768px){header{font-size:3em;}nav button{font-size:1em;padding:10px 18px;}.content p{font-size:1.1em;}}
-@media(max-width:480px){header{font-size:2.2em;}nav button{font-size:0.9em;padding:8px 14px;}.content p{font-size:1em;}}
 </style>
 </head>
 
@@ -78,33 +76,33 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;position:relat
 </nav>
 
 <main id="main">
-  <!-- Cocon -->
+  <!-- Cocon interactif -->
   <div class="content" id="content">
     <p>Cliquez sur un module pour afficher une phrase relaxante.</p>
   </div>
 
-  <!-- Blog -->
+  <!-- Section Blog -->
   <div class="blog-section" id="blog-section">
     <button onclick="showCocon()" style="padding:10px 20px;border:none;border-radius:25px;background:#ff6f91;color:white;font-weight:bold;cursor:pointer;margin-bottom:20px;">← Retour à l'Espace Douceur</button>
     <h2 style="text-align:center; margin-bottom:20px;">📰 Blog Douceur</h2>
     <div class="articles" id="articles"></div>
 
-    <!-- Formulaire -->
+    <!-- Formulaire pour ajouter un article -->
     <div class="add-article">
       <h3>📝 Ajouter un nouvel article</h3>
-      <input type="text" id="new-title" placeholder="Titre de l'article" style="width:100%;padding:8px;margin-bottom:10px;border-radius:10px;border:1px solid #ccc;">
-      <textarea id="new-content" placeholder="Contenu de l'article" style="width:100%;padding:8px;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;"></textarea>
-      <button id="add-btn" style="padding:10px 20px;border:none;border-radius:25px;background:#4a7c75;color:white;font-weight:bold;cursor:pointer;">Ajouter l'article</button>
+      <input type="text" id="new-title" placeholder="Titre de l'article">
+      <textarea id="new-content" placeholder="Contenu de l'article"></textarea>
+      <button id="add-btn">Ajouter l'article</button>
     </div>
   </div>
 </main>
 
+<!-- JS -->
+<script src="blog.js"></script>
+
 <script>
-// -----------------------------
-// Cocon phrases et modules
-// -----------------------------
+// --- Cocon interactif minimal ---
 const content=document.getElementById('content');
-let breatheInterval;
 function switchMode(mode){
   const phrasesModules={
     confiance:["💪 Je mérite de m'aimer.","🌟 Je suis capable de réussir."],
@@ -116,43 +114,6 @@ function switchMode(mode){
   const phrase=phrases[Math.floor(Math.random()*phrases.length)];
   content.innerHTML=`<p>${phrase}</p>`;
 }
-
-// -----------------------------
-// Blog JS
-// -----------------------------
-function showBlog() {
-  document.getElementById('content').style.display='none';
-  document.getElementById('blog-section').style.display='flex';
-}
-function showCocon() {
-  document.getElementById('blog-section').style.display='none';
-  document.getElementById('content').style.display='block';
-}
-
-const addBtn = document.getElementById('add-btn');
-const newTitle = document.getElementById('new-title');
-const newContent = document.getElementById('new-content');
-const articlesContainer = document.getElementById('articles');
-
-addBtn.addEventListener('click', () => {
-  const title = newTitle.value.trim();
-  const contentText = newContent.value.trim();
-  if(title && contentText){
-    const card=document.createElement('div');
-    card.className='card';
-    card.dataset.content=contentText;
-    card.innerHTML=`<h2>${title}</h2><p>Cliquez pour voir plus...</p><span class="date">Publié le ${new Date().toLocaleDateString()}</span>`;
-    card.addEventListener('click', ()=>{
-      card.querySelector('p').innerText=card.dataset.content;
-      card.style.background='rgba(255,255,255,0.95)';
-      card.style.boxShadow='0 12px 30px rgba(0,0,0,0.1)';
-    });
-    articlesContainer.prepend(card);
-    newTitle.value=''; newContent.value='';
-  } else {
-    alert('Merci de remplir le titre et le contenu.');
-  }
-});
 </script>
 
 </body>

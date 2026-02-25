@@ -1,25 +1,20 @@
-// --- Affichage / retour Blog ---
-function showBlog() {
-  document.getElementById('content').style.display = 'none';
-  document.getElementById('blog-section').style.display = 'flex';
-}
+document.addEventListener("DOMContentLoaded", function() {
 
-function showCocon() {
-  document.getElementById('blog-section').style.display = 'none';
-  document.getElementById('content').style.display = 'block';
-}
+  // Sélecteurs
+  const blogBtn = document.getElementById('blog-btn');
+  const backBtn = document.getElementById('back-btn');
+  const contentDiv = document.getElementById('content');
+  const blogSection = document.getElementById('blog-section');
+  const articlesContainer = document.getElementById('articles');
+  const addBtn = document.getElementById('add-btn');
+  const newTitle = document.getElementById('new-title');
+  const newContent = document.getElementById('new-content');
 
-// --- Gestion ajout articles ---
-const addBtn = document.getElementById('add-btn');
-const newTitle = document.getElementById('new-title');
-const newContent = document.getElementById('new-content');
-const articlesContainer = document.getElementById('articles');
-
-// --- Articles publics par défaut ---
-const defaultArticles = [
-  {
-    title: "L'importance de parler de ses émotions",
-    content: `
+  // --- Articles par défaut ---
+  const defaultArticles = [
+    {
+      title: "L'importance de parler de ses émotions",
+      content: `
 <p>💬 <strong>Parler de ses émotions :</strong> ose les écouter et les partager</p>
 
 <h3>🌈 1. Qu’est-ce qu’une émotion ?</h3>
@@ -58,55 +53,58 @@ const defaultArticles = [
 <p>Exprimer ses émotions, c’est se respecter et se comprendre. C’est aussi permettre aux autres de te comprendre et de créer des liens plus vrais.</p>
 <p>Alors n’hésite pas : parle, écris, bouge ou crée… tes émotions méritent d’être entendues ! 🌟</p>
 `
-  },
-  {
-    title: "Gérer l'anxiété au quotidien",
-    content: "<p>Quelques exercices simples de respiration ou de méditation peuvent aider à retrouver le calme.</p>"
-  },
-  {
-    title: "Page 3114 - Ressources de soutien",
-    content: "<p>Cet article fictif représente la page 3114 pour référence. Vous pouvez y ajouter votre contenu sécurisé.</p>"
-  },
-  {
-    title: "Prendre soin de sa santé mentale",
-    content: "<p>Identifier les sources de stress et pratiquer l'auto-compassion favorisent un bien-être durable.</p>"
+    },
+    {
+      title: "Gérer l'anxiété au quotidien",
+      content: "<p>Quelques exercices simples de respiration ou de méditation peuvent aider à retrouver le calme.</p>"
+    },
+    {
+      title: "Page 3114 - Ressources de soutien",
+      content: "<p>Cet article fictif représente la page 3114 pour référence. Vous pouvez y ajouter votre contenu sécurisé.</p>"
+    },
+    {
+      title: "Prendre soin de sa santé mentale",
+      content: "<p>Identifier les sources de stress et pratiquer l'auto-compassion favorisent un bien-être durable.</p>"
+    }
+  ];
+
+  // --- Création d'une carte article ---
+  function createArticleCard(article){
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.content = article.content;
+    card.innerHTML = `<h2>${article.title}</h2><p>Cliquez pour voir plus...</p><span class="date">Publié le ${new Date().toLocaleDateString()}</span>`;
+
+    card.addEventListener('click', () => {
+      card.querySelector('p').innerHTML = card.dataset.content;
+      card.style.background='rgba(255,255,255,0.95)';
+      card.style.boxShadow='0 12px 30px rgba(0,0,0,0.1)';
+      card.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    return card;
   }
-];
 
-// --- Fonction pour créer les cartes articles ---
-function createArticleCard(article) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.dataset.content = article.content;
-  card.innerHTML = `<h2>${article.title}</h2><p>Cliquez pour voir plus...</p><span class="date">Publié le ${new Date().toLocaleDateString()}</span>`;
-
-  card.addEventListener('click', () => {
-    // Afficher le contenu HTML complet avec sauts de ligne et emojis
-    card.querySelector('p').innerHTML = card.dataset.content;
-    card.style.background = 'rgba(255,255,255,0.95)';
-    card.style.boxShadow = '0 12px 30px rgba(0,0,0,0.1)';
-    // Scroll automatique sur mobile pour le contenu visible
-    card.scrollIntoView({behavior: "smooth", block: "start"});
+  // --- Ajouter articles par défaut ---
+  defaultArticles.forEach(a => {
+    articlesContainer.appendChild(createArticleCard(a));
   });
 
-  return card;
-}
+  // --- Ajouter un nouvel article ---
+  addBtn.addEventListener('click', () => {
+    const title = newTitle.value.trim();
+    const contentText = newContent.value.trim();
+    if(title && contentText){
+      const newArticle = {title:title, content:`<p>${contentText.replace(/\n/g,"</p><p>")}</p>`};
+      articlesContainer.prepend(createArticleCard(newArticle));
+      newTitle.value=''; newContent.value='';
+    } else {
+      alert('Merci de remplir le titre et le contenu.');
+    }
+  });
 
-// --- Ajouter les articles par défaut ---
-defaultArticles.forEach(article => {
-  articlesContainer.appendChild(createArticleCard(article));
-});
+  // --- Boutons navigation ---
+  blogBtn.addEventListener('click', ()=>{contentDiv.style.display='none';blogSection.style.display='flex';});
+  backBtn.addEventListener('click', ()=>{blogSection.style.display='none';contentDiv.style.display='block';});
 
-// --- Ajouter un nouvel article via le formulaire ---
-addBtn.addEventListener('click', () => {
-  const title = newTitle.value.trim();
-  const contentText = newContent.value.trim();
-  if (title && contentText) {
-    const newArticle = {title: title, content: `<p>${contentText.replace(/\n/g,"</p><p>")}</p>`};
-    articlesContainer.prepend(createArticleCard(newArticle));
-    newTitle.value = '';
-    newContent.value = '';
-  } else {
-    alert('Merci de remplir le titre et le contenu.');
-  }
 });
